@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function
+import operator
+from flask import request, g
+import requests
+import json
+#from . import Resource
+#from .. import schemas
+from flask_restful import Resource,reqparse
+from .. import users
+#from users import Users
+
+parser = reqparse.RequestParser()
+
+class AMDATA(Resource):
+    global info
+    def __init__(self):
+        self.info = 0;
+
+    def get(self,supi):
+        UdrGetAmDataUri =  "http://127.0.0.1:8080/subscription-data/365464/123456/provisioned-data/am-data"
+        r = requests.get(UdrGetAmDataUri)
+        if r.status_code == 200:
+            UdrAmData = r.json()
+            print(UdrAmData)
+            data={"gpsis":UdrAmData['gpsis'],"internalGroupIds":UdrAmData['internalGroupIds'],"nssai":UdrAmData['nssai'],"ratRestrictions":UdrAmData['ratRestrictions'],"forbiddenAreas":UdrAmData['forbiddenAreas'],"coreNetworkTypeRestrictions":UdrAmData['coreNetworkTypeRestrictions'],"ueUsageType":UdrAmData['ueUsageType'],"mpsPriority":UdrAmData['mpsPriority'],"mcsPriority":UdrAmData['mcsPriority'],"dlPacketCount":UdrAmData['dlPacketCount'],"sorInfo":UdrAmData['sorInfo'],"upuInfo":UdrAmData['upuInfo'],"micoAllowed":UdrAmData['micoAllowed'],"sharedAmDataIds":UdrAmData['sharedAmDataIds'],"subscribedDnnList":UdrAmData['subscribedDnnList']}
+            headers = { "Content-Type" : "application/json"}
+            datajson = json.dumps(data)
+            return data,200

@@ -1,0 +1,1 @@
+START python ".\\UDM\\Nudm_UEAuthentication\\__init__.py" & START python ".\\UDM\\Nudm_EventExposure\\__init__.py" & START python ".\\UDM\\Nudm_SubscribeDataManagement\\__init__.py" & START python ".\\UDM\\Nudm_UEContextManagement\\__init__.py" & START python ".\\UDM\\Nudm_ParameterProvision\\__init__.py"

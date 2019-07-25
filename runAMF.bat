@@ -1,0 +1,1 @@
+START python ".\\AMF\\Namf_Communication\\__init__.py" & START python ".\\AMF\\Namf_EventExposure\\__init__.py"  & START python ".\\AMF\\Namf_MT\\__init__.py"

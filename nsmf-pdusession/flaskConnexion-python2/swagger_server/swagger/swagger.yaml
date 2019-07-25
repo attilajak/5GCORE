@@ -1,0 +1,4116 @@
+openapi: 3.0.0
+info:
+  title: Nsmf_PDUSession
+  description: |
+    SMF PDU Session Service.
+    © 2019, 3GPP Organizational Partners (ARIB, ATIS, CCSA, ETSI, TSDSI, TTA, TTC).
+    All rights reserved.
+  version: 1.0.2
+externalDocs:
+  description: 3GPP TS 29.502 V15.3.0; 5G System; Session Management Services; Stage
+    3
+  url: http://www.3gpp.org/ftp/Specs/archive/29_series/29.502/
+servers:
+- url: http://127.0.0.1:8083/nsmf-pdusession/v1
+  variables:
+    apiRoot:
+      description: apiRoot as defined in subclause 4.4 of 3GPP TS 29.501. The sm-contexts
+        and pdu-sessions resources can be distributed on different processing instances
+        or hosts. Thus the authority and/or deployment-specific string of the apiRoot
+        of the created individual sm context and pdu-session resources' URIs may differ
+        from the authority and/or deployment-specific string of the apiRoot of the
+        sm-contexts and pdu-sessions collections' URIs.
+      default: https://example.com
+paths:
+  /sm-contexts:
+    post:
+      summary: Create SM Context
+      operationId: post_sm_contexts
+      requestBody:
+        description: representation of the SM context to be created in the SMF
+        content:
+          multipart/related:
+            schema:
+              $ref: '#/components/schemas/body'
+            encoding:
+              jsonData:
+                contentType: application/json
+                style: form
+              binaryDataN1SmMessage:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+        required: true
+      responses:
+        201:
+          description: successful creation of an SM context
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nsmf-pdusession/{apiVersion}/sm-contexts/{smContextRef}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreatedData'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        307:
+          description: temporary redirect
+          headers:
+            Location:
+              description: An alternative URI of the resource located on an alternative
+                service instance within the SMF that was selected by the AMF
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+        308:
+          description: permanent redirect
+          headers:
+            Location:
+              description: An alternative URI of the resource located on an alternative
+                service instance within the SMF that was selected by the AMF
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+        400:
+          description: unsuccessful creation of an SM context - bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        403:
+          description: unsuccessful creation of an SM context - forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        404:
+          description: unsuccessful creation of an SM context - not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: unsuccessful creation of an SM context - internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        503:
+          description: unsuccessful creation of an SM context - service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        504:
+          description: unsuccessful creation of an SM context - gateway timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        default:
+          description: Generic Error
+      callbacks:
+        smContextStatusNotification:
+          '{$request.body#/smContextStatusUri}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SmContextStatusNotification'
+                required: true
+              responses:
+                204:
+                  description: successful notification
+                307:
+                  description: temporary redirect
+                  headers:
+                    Location:
+                      description: A URI pointing to the endpoint of another NF service
+                        consumer to which the notification should be sent
+                      required: true
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                400:
+                  description: Bad request
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                403:
+                  description: Forbidden
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                404:
+                  description: Not Found
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                411:
+                  description: Length Required
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                413:
+                  description: Payload Too Large
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                415:
+                  description: Unsupported Media Type
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                429:
+                  description: Too Many Requests
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                500:
+                  description: Internal Server Error
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                503:
+                  description: Service Unavailable
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sm-contexts/{smContextRef}/retrieve:
+    post:
+      summary: Retrieve SM Context
+      operationId: retrieve_sm_context
+      parameters:
+      - name: smContextRef
+        in: path
+        description: SM context reference
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: parameters used to retrieve the SM context
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmContextRetrieveData'
+        required: false
+      responses:
+        200:
+          description: successful retrieval of an SM context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextRetrievedData'
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sm-contexts/{smContextRef}/modify:
+    post:
+      summary: Update SM Context
+      operationId: update_sm_context
+      parameters:
+      - name: smContextRef
+        in: path
+        description: SM context reference
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: representation of the updates to apply to the SM context
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmContextUpdateData'
+          multipart/related:
+            schema:
+              $ref: '#/components/schemas/body_1'
+            encoding:
+              jsonData:
+                contentType: application/json
+                style: form
+              binaryDataN1SmMessage:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+              binaryDataN2SmInformation:
+                contentType: application/vnd.3gpp.ngap
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+              binaryDataN2SmInformationExt1:
+                contentType: application/vnd.3gpp.ngap
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+        required: true
+      responses:
+        200:
+          description: successful update of an SM context with content in the response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdatedData'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        204:
+          description: successful update of an SM context without content in the response
+        400:
+          description: unsuccessful update of an SM context - bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        403:
+          description: unsuccessful update of an SM context - forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        404:
+          description: unsuccessful update of an SM context - not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: unsuccessful update of an SM context - Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        503:
+          description: unsuccessful update of an SM context - Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmContextUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmMessage:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+                binaryDataN2SmInformation:
+                  contentType: application/vnd.3gpp.ngap
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sm-contexts/{smContextRef}/release:
+    post:
+      summary: Release SM Context
+      operationId: release_sm_context
+      parameters:
+      - name: smContextRef
+        in: path
+        description: SM context reference
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: representation of the data to be sent to the SMF when releasing
+          the SM context
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmContextReleaseData'
+          multipart/related:
+            schema:
+              $ref: '#/components/schemas/body_2'
+            encoding:
+              jsonData:
+                contentType: application/json
+                style: form
+              binaryDataN2SmInformation:
+                contentType: application/vnd.3gpp.ngap
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+        required: false
+      responses:
+        204:
+          description: successful release of an SM context without content in the
+            response
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /pdu-sessions:
+    post:
+      summary: Create
+      operationId: post_pdu_sessions
+      requestBody:
+        description: representation of the PDU session to be created in the H-SMF
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PduSessionCreateData'
+          multipart/related:
+            schema:
+              $ref: '#/components/schemas/body_3'
+            encoding:
+              jsonData:
+                contentType: application/json
+                style: form
+              binaryDataN1SmInfoFromUe:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+              binaryDataUnknownN1SmInfo:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+        required: true
+      responses:
+        201:
+          description: successful creation of a PDU session
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nsmf-pdusession/{apiVersion}/pdu-sessions/{pduSessionRef}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreatedData'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_201_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        307:
+          description: temporary redirect
+          headers:
+            Location:
+              description: An alternative URI of the resource located on an alternative
+                service instance within the SMF that was selected by the AMF
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+        308:
+          description: permanent redirect
+          headers:
+            Location:
+              description: An alternative URI of the resource located on an alternative
+                service instance within the SMF that was selected by the AMF
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+        400:
+          description: unsuccessful creation of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        403:
+          description: unsuccessful creation of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        404:
+          description: unsuccessful creation of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: unsuccessful creation of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        503:
+          description: unsuccessful creation of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PduSessionCreateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        default:
+          description: Generic Error
+      callbacks:
+        statusNotification:
+          '{$request.body#/vsmfPduSessionUri}':
+            post:
+              summary: Notify Status
+              operationId: NotifyStatus
+              requestBody:
+                description: representation of the status notification
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/StatusNotification'
+                required: true
+              responses:
+                204:
+                  description: successful notificationof the status change
+                400:
+                  description: Bad request
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                403:
+                  description: Forbidden
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                404:
+                  description: Not Found
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                411:
+                  description: Length Required
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                413:
+                  description: Payload Too Large
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                415:
+                  description: Unsupported Media Type
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                429:
+                  description: Too Many Requests
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                500:
+                  description: Internal Server Error
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                503:
+                  description: Service Unavailable
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                default:
+                  description: Generic Error
+        update:
+          '{$request.body#/vsmfPduSessionUri}/modify':
+            post:
+              summary: Update (initiated by H-SMF)
+              operationId: ModifyPduSession
+              requestBody:
+                description: representation of updates to apply to the PDU session
+                content:
+                  application/+json:
+                    schema:
+                      $ref: '#/components/schemas/VsmfUpdateData'
+                  multipart/related:
+                    schema:
+                      type: object
+                      properties:
+                        jsonData:
+                          $ref: '#/components/schemas/VsmfUpdateData'
+                        binaryDataN1SmInfoToUe:
+                          type: string
+                          format: binary
+                    encoding:
+                      jsonData:
+                        contentType: application/json
+                        style: form
+                      binaryDataN1SmInfoToUe:
+                        contentType: application/vnd.3gpp.5gnas
+                        headers:
+                          Content-Id:
+                            style: simple
+                            explode: false
+                            schema:
+                              type: string
+                        style: form
+                required: true
+              responses:
+                200:
+                  description: successful update of a PDU session with content in
+                    the response
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdatedData'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdatedData'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                204:
+                  description: successful update of a PDU session without content
+                    in the response
+                400:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                403:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                404:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                411:
+                  description: Length Required
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                413:
+                  description: Payload Too Large
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                415:
+                  description: Unsupported Media Type
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                429:
+                  description: Too Many Requests
+                  content:
+                    application/problem+json:
+                      schema:
+                        $ref: '#/components/schemas/ProblemDetails'
+                500:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                503:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                504:
+                  description: unsuccessful update of a PDU session
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VsmfUpdateError'
+                    multipart/related:
+                      schema:
+                        type: object
+                        properties:
+                          jsonData:
+                            $ref: '#/components/schemas/VsmfUpdateError'
+                          binaryDataN1SmInfoFromUe:
+                            type: string
+                            format: binary
+                          binaryDataUnknownN1SmInfo:
+                            type: string
+                            format: binary
+                      encoding:
+                        jsonData:
+                          contentType: application/json
+                          style: form
+                        binaryDataN1SmInfoFromUe:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                        binaryDataUnknownN1SmInfo:
+                          contentType: application/vnd.3gpp.5gnas
+                          headers:
+                            Content-Id:
+                              style: simple
+                              explode: false
+                              schema:
+                                type: string
+                          style: form
+                default:
+                  description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /pdu-sessions/{pduSessionRef}/modify:
+    post:
+      summary: Update (initiated by V-SMF)
+      operationId: update_pdu_session
+      parameters:
+      - name: pduSessionRef
+        in: path
+        description: PDU session reference
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: representation of the updates to apply to the PDU session
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HsmfUpdateData'
+          multipart/related:
+            schema:
+              $ref: '#/components/schemas/body_4'
+            encoding:
+              jsonData:
+                contentType: application/json
+                style: form
+              binaryDataN1SmInfoFromUe:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+              binaryDataUnknownN1SmInfo:
+                contentType: application/vnd.3gpp.5gnas
+                headers:
+                  Content-Id:
+                    style: simple
+                    explode: false
+                    schema:
+                      type: string
+                style: form
+        required: true
+      responses:
+        200:
+          description: successful update of a PDU session with content in the response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdatedData'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        204:
+          description: successful update of a PDU session without content in the response
+        400:
+          description: unsuccessful update of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        403:
+          description: unsuccessful update of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        404:
+          description: unsuccessful update of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: unsuccessful update of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        503:
+          description: unsuccessful update of a PDU session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HsmfUpdateError'
+            multipart/related:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+              encoding:
+                jsonData:
+                  contentType: application/json
+                  style: form
+                binaryDataN1SmInfoToUe:
+                  contentType: application/vnd.3gpp.5gnas
+                  headers:
+                    Content-Id:
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                  style: form
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /pdu-sessions/{pduSessionRef}/release:
+    post:
+      summary: Release
+      operationId: release_pdu_session
+      parameters:
+      - name: pduSessionRef
+        in: path
+        description: PDU session reference
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: representation of the data to be sent to H-SMF when releasing
+          the PDU session
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseData'
+        required: false
+      responses:
+        204:
+          description: successful release of a PDU session
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    SmContextCreateData:
+      required:
+      - anType
+      - servingNetwork
+      - servingNfId
+      - smContextStatusUri
+      type: object
+      properties:
+        supi:
+          $ref: '#/components/schemas/Supi'
+        unauthenticatedSupi:
+          type: boolean
+          default: false
+        pei:
+          $ref: '#/components/schemas/Pei'
+        gpsi:
+          $ref: '#/components/schemas/Gpsi'
+        pduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        dnn:
+          $ref: '#/components/schemas/Dnn'
+        sNssai:
+          $ref: '#/components/schemas/Snssai'
+        hplmnSnssai:
+          $ref: '#/components/schemas/Snssai'
+        servingNfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        guami:
+          $ref: '#/components/schemas/Guami'
+        serviceName:
+          $ref: '#/components/schemas/ServiceName'
+        servingNetwork:
+          $ref: '#/components/schemas/PlmnId'
+        requestType:
+          $ref: '#/components/schemas/RequestType'
+        n1SmMsg:
+          $ref: '#/components/schemas/RefToBinaryData'
+        anType:
+          $ref: '#/components/schemas/AccessType'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        presenceInLadn:
+          $ref: '#/components/schemas/PresenceState'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        smContextStatusUri:
+          $ref: '#/components/schemas/Uri'
+        hSmfUri:
+          $ref: '#/components/schemas/Uri'
+        additionalHsmfUri:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Uri'
+        oldPduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        pduSessionsActivateList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PduSessionId'
+        ueEpsPdnConnection:
+          $ref: '#/components/schemas/EpsPdnCnxContainer'
+        hoState:
+          $ref: '#/components/schemas/HoState'
+        pcfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        nrfUri:
+          $ref: '#/components/schemas/Uri'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        selMode:
+          $ref: '#/components/schemas/DnnSelectionMode'
+        backupAmfInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupAmfInfo'
+        traceData:
+          $ref: '#/components/schemas/TraceData'
+        udmGroupId:
+          $ref: '#/components/schemas/NfGroupId'
+        routingIndicator:
+          type: string
+        epsInterworkingInd:
+          $ref: '#/components/schemas/EpsInterworkingIndication'
+        indirectForwardingFlag:
+          type: boolean
+        targetId:
+          $ref: '#/components/schemas/NgRanTargetId'
+        epsBearerCtxStatus:
+          $ref: '#/components/schemas/EpsBearerContextStatus'
+    SmContextCreatedData:
+      type: object
+      properties:
+        hSmfUri:
+          $ref: '#/components/schemas/Uri'
+        pduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        sNssai:
+          $ref: '#/components/schemas/Snssai'
+        upCnxState:
+          $ref: '#/components/schemas/UpCnxState'
+        n2SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoType:
+          $ref: '#/components/schemas/N2SmInfoType'
+        allocatedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EbiArpMapping'
+        hoState:
+          $ref: '#/components/schemas/HoState'
+        gpsi:
+          $ref: '#/components/schemas/Gpsi'
+        smfServiceInstanceId:
+          type: string
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+      example:
+        recoveryTime: 2000-01-23T04:56:07.000+00:00
+        hSmfUri: hSmfUri
+        n2SmInfo:
+          contentId: contentId
+        allocatedEbiList:
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        hoState: ""
+        supportedFeatures: supportedFeatures
+        upCnxState: ""
+        smfServiceInstanceId: smfServiceInstanceId
+        pduSessionId: 20
+        sNssai:
+          sd: sd
+          sst: 153
+        n2SmInfoType: ""
+        gpsi: gpsi
+    SmContextUpdateData:
+      type: object
+      properties:
+        pei:
+          $ref: '#/components/schemas/Pei'
+        servingNfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        guami:
+          $ref: '#/components/schemas/Guami'
+        servingNetwork:
+          $ref: '#/components/schemas/PlmnId'
+        backupAmfInfo:
+          minItems: 1
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/BackupAmfInfo'
+        anType:
+          $ref: '#/components/schemas/AccessType'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        presenceInLadn:
+          $ref: '#/components/schemas/PresenceState'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        upCnxState:
+          $ref: '#/components/schemas/UpCnxState'
+        hoState:
+          $ref: '#/components/schemas/HoState'
+        toBeSwitched:
+          type: boolean
+          default: false
+        failedToBeSwitched:
+          type: boolean
+        n1SmMsg:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoType:
+          $ref: '#/components/schemas/N2SmInfoType'
+        targetId:
+          $ref: '#/components/schemas/NgRanTargetId'
+        targetServingNfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        smContextStatusUri:
+          $ref: '#/components/schemas/Uri'
+        dataForwarding:
+          type: boolean
+          default: false
+        epsBearerSetup:
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerContainer'
+        revokeEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        release:
+          type: boolean
+          default: false
+        cause:
+          $ref: '#/components/schemas/Cause'
+        ngApCause:
+          $ref: '#/components/schemas/NgApCause'
+        5gMmCauseValue:
+          $ref: '#/components/schemas/5GMmCause'
+        sNssai:
+          $ref: '#/components/schemas/Snssai'
+        traceData:
+          $ref: '#/components/schemas/TraceData'
+        epsInterworkingInd:
+          $ref: '#/components/schemas/EpsInterworkingIndication'
+        anTypeCanBeChanged:
+          type: boolean
+          default: false
+        n2SmInfoExt1:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoTypeExt1:
+          $ref: '#/components/schemas/N2SmInfoType'
+    SmContextUpdatedData:
+      type: object
+      properties:
+        upCnxState:
+          $ref: '#/components/schemas/UpCnxState'
+        hoState:
+          $ref: '#/components/schemas/HoState'
+        releaseEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        allocatedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EbiArpMapping'
+        modifiedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EbiArpMapping'
+        n1SmMsg:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoType:
+          $ref: '#/components/schemas/N2SmInfoType'
+        epsBearerSetup:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerContainer'
+        dataForwarding:
+          type: boolean
+        cause:
+          $ref: '#/components/schemas/Cause'
+      example:
+        dataForwarding: true
+        allocatedEbiList:
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        n2SmInfo:
+          contentId: contentId
+        hoState: ""
+        upCnxState: ""
+        epsBearerSetup:
+        - epsBearerSetup
+        - epsBearerSetup
+        cause: ""
+        modifiedEbiList:
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        - epsBearerId: 2
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        n1SmMsg:
+          contentId: contentId
+        releaseEbiList:
+        - 1
+        - 1
+        n2SmInfoType: ""
+    SmContextReleaseData:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/Cause'
+        ngApCause:
+          $ref: '#/components/schemas/NgApCause'
+        5gMmCauseValue:
+          $ref: '#/components/schemas/5GMmCause'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        vsmfReleaseOnly:
+          type: boolean
+          default: false
+        n2SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoType:
+          $ref: '#/components/schemas/N2SmInfoType'
+    SmContextStatusNotification:
+      required:
+      - statusInfo
+      type: object
+      properties:
+        statusInfo:
+          $ref: '#/components/schemas/StatusInfo'
+    PduSessionCreateData:
+      required:
+      - anType
+      - dnn
+      - servingNetwork
+      - vcnTunnelInfo
+      - vsmfId
+      - vsmfPduSessionUri
+      type: object
+      properties:
+        supi:
+          $ref: '#/components/schemas/Supi'
+        unauthenticatedSupi:
+          type: boolean
+          default: false
+        pei:
+          $ref: '#/components/schemas/Pei'
+        pduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        dnn:
+          $ref: '#/components/schemas/Dnn'
+        sNssai:
+          $ref: '#/components/schemas/Snssai'
+        vsmfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        servingNetwork:
+          $ref: '#/components/schemas/PlmnId'
+        requestType:
+          $ref: '#/components/schemas/RequestType'
+        epsBearerId:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        pgwS8cFteid:
+          $ref: '#/components/schemas/Bytes'
+        vsmfPduSessionUri:
+          $ref: '#/components/schemas/Uri'
+        vcnTunnelInfo:
+          $ref: '#/components/schemas/TunnelInfo'
+        anType:
+          $ref: '#/components/schemas/AccessType'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        gpsi:
+          $ref: '#/components/schemas/Gpsi'
+        n1SmInfoFromUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        unknownN1SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        hPcfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        hoPreparationIndication:
+          type: boolean
+        selMode:
+          $ref: '#/components/schemas/DnnSelectionMode'
+        alwaysOnRequested:
+          type: boolean
+          default: false
+        udmGroupId:
+          $ref: '#/components/schemas/NfGroupId'
+        routingIndicator:
+          type: string
+        epsInterworkingInd:
+          $ref: '#/components/schemas/EpsInterworkingIndication'
+        vSmfServiceInstanceId:
+          type: string
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+        roamingChargingProfile:
+          $ref: '#/components/schemas/RoamingChargingProfile'
+        chargingId:
+          type: string
+        oldPduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        epsBearerCtxStatus:
+          $ref: '#/components/schemas/EpsBearerContextStatus'
+        amfNfId:
+          $ref: '#/components/schemas/NfInstanceId'
+        guami:
+          $ref: '#/components/schemas/Guami'
+    PduSessionCreatedData:
+      required:
+      - hSmfInstanceId
+      - hcnTunnelInfo
+      - pduSessionType
+      - qosFlowsSetupList
+      - sessionAmbr
+      - sscMode
+      type: object
+      properties:
+        pduSessionType:
+          $ref: '#/components/schemas/PduSessionType'
+        sscMode:
+          pattern: ^[0-7]$
+          type: string
+        hcnTunnelInfo:
+          $ref: '#/components/schemas/TunnelInfo'
+        sessionAmbr:
+          $ref: '#/components/schemas/Ambr'
+        qosFlowsSetupList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowSetupItem'
+        hSmfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        pduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        sNssai:
+          $ref: '#/components/schemas/Snssai'
+        enablePauseCharging:
+          type: boolean
+          default: false
+        ueIpv4Address:
+          $ref: '#/components/schemas/Ipv4Addr'
+        ueIpv6Prefix:
+          $ref: '#/components/schemas/Ipv6Prefix'
+        n1SmInfoToUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        epsPdnCnxInfo:
+          $ref: '#/components/schemas/EpsPdnCnxInfo'
+        epsBearerInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerInfo'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        maxIntegrityProtectedDataRate:
+          $ref: '#/components/schemas/MaxIntegrityProtectedDataRate'
+        alwaysOnGranted:
+          type: boolean
+          default: false
+        gpsi:
+          $ref: '#/components/schemas/Gpsi'
+        upSecurity:
+          $ref: '#/components/schemas/UpSecurity'
+        roamingChargingProfile:
+          $ref: '#/components/schemas/RoamingChargingProfile'
+        hSmfServiceInstanceId:
+          type: string
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+      example:
+        maxIntegrityProtectedDataRate: ""
+        recoveryTime: 2000-01-23T04:56:07.000+00:00
+        enablePauseCharging: false
+        alwaysOnGranted: false
+        epsPdnCnxInfo:
+          pgwS8cFteid: ""
+          pgwNodeName: ""
+        supportedFeatures: supportedFeatures
+        hcnTunnelInfo:
+          ipv6Addr: 2001:db8:85a3::8a2e:370:7334
+          gtpTeid: gtpTeid
+          ipv4Addr: 198.51.100.1
+        sscMode: sscMode
+        epsBearerInfo:
+        - pgwS8uFteid: ""
+          ebi: 1
+          bearerLevelQoS: ""
+        - pgwS8uFteid: ""
+          ebi: 1
+          bearerLevelQoS: ""
+        ueIpv6Prefix: 2001:db8:abcd:12::0/64
+        roamingChargingProfile:
+          partialRecordMethod: ""
+          triggers:
+          - timeLimit: 1
+            volumeLimit64: 0
+            maxNumberOfccc: 0
+            volumeLimit: 0
+            triggerType: ""
+            triggerCategory: ""
+          - timeLimit: 1
+            volumeLimit64: 0
+            maxNumberOfccc: 0
+            volumeLimit: 0
+            triggerType: ""
+            triggerCategory: ""
+        gpsi: gpsi
+        sessionAmbr:
+          uplink: uplink
+          downlink: downlink
+        qosFlowsSetupList:
+        - qosFlowProfile:
+            dynamic5Qi:
+              priorityLevel: 89
+              maxDataBurstVol: 830
+              packetErrRate: packetErrRate
+              averWindow: 1481
+              resourceType: ""
+              packetDelayBudget: 1
+            rqa: ""
+            gbrQosFlowInfo:
+              maxFbrDl: maxFbrDl
+              notifControl: ""
+              maxFbrUl: maxFbrUl
+              maxPacketLossRateUl: 738
+              maxPacketLossRateDl: 414
+              guaFbrUl: guaFbrUl
+              guaFbrDl: guaFbrDl
+            additionalQosFlowInfo: ""
+            5qi: 37
+            nonDynamic5Qi:
+              priorityLevel: 76
+              maxDataBurstVol: 943
+              averWindow: 2308
+            arp:
+              priorityLevel: 9
+              preemptCap: ""
+              preemptVuln: ""
+          qosRules: ""
+          qfi: 5
+          qosFlowDescription: ""
+          ebi: 9
+        - qosFlowProfile:
+            dynamic5Qi:
+              priorityLevel: 89
+              maxDataBurstVol: 830
+              packetErrRate: packetErrRate
+              averWindow: 1481
+              resourceType: ""
+              packetDelayBudget: 1
+            rqa: ""
+            gbrQosFlowInfo:
+              maxFbrDl: maxFbrDl
+              notifControl: ""
+              maxFbrUl: maxFbrUl
+              maxPacketLossRateUl: 738
+              maxPacketLossRateDl: 414
+              guaFbrUl: guaFbrUl
+              guaFbrDl: guaFbrDl
+            additionalQosFlowInfo: ""
+            5qi: 37
+            nonDynamic5Qi:
+              priorityLevel: 76
+              maxDataBurstVol: 943
+              averWindow: 2308
+            arp:
+              priorityLevel: 9
+              preemptCap: ""
+              preemptVuln: ""
+          qosRules: ""
+          qfi: 5
+          qosFlowDescription: ""
+          ebi: 9
+        pduSessionType: ""
+        n1SmInfoToUe:
+          contentId: contentId
+        upSecurity:
+          upIntegr: ""
+          upConfid: ""
+        ueIpv4Address: 198.51.100.1
+        hSmfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        hSmfServiceInstanceId: hSmfServiceInstanceId
+        pduSessionId: 31
+        sNssai:
+          sd: sd
+          sst: 153
+    HsmfUpdateData:
+      required:
+      - requestIndication
+      type: object
+      properties:
+        requestIndication:
+          $ref: '#/components/schemas/RequestIndication'
+        pei:
+          $ref: '#/components/schemas/Pei'
+        vcnTunnelInfo:
+          $ref: '#/components/schemas/TunnelInfo'
+        servingNetwork:
+          $ref: '#/components/schemas/PlmnId'
+        anType:
+          $ref: '#/components/schemas/AccessType'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        pauseCharging:
+          type: boolean
+        pti:
+          $ref: '#/components/schemas/ProcedureTransactionId'
+        n1SmInfoFromUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        unknownN1SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        qosFlowsRelNotifyList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowItem'
+        qosFlowsNotifyList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowNotifyItem'
+        NotifyList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PduSessionNotifyItem'
+        epsBearerId:
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        hoPreparationIndication:
+          type: boolean
+        revokeEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        cause:
+          $ref: '#/components/schemas/Cause'
+        ngApCause:
+          $ref: '#/components/schemas/NgApCause'
+        5gMmCauseValue:
+          $ref: '#/components/schemas/5GMmCause'
+        alwaysOnRequested:
+          type: boolean
+          default: false
+        epsInterworkingInd:
+          $ref: '#/components/schemas/EpsInterworkingIndication'
+        secondaryRatUsageReport:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageReport'
+        secondaryRatUsageInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageInfo'
+        anTypeCanBeChanged:
+          type: boolean
+          default: false
+    HsmfUpdatedData:
+      type: object
+      properties:
+        n1SmInfoToUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+      example:
+        n1SmInfoToUe:
+          contentId: contentId
+    ReleaseData:
+      type: object
+      properties:
+        cause:
+          $ref: '#/components/schemas/Cause'
+        ngApCause:
+          $ref: '#/components/schemas/NgApCause'
+        5gMmCauseValue:
+          $ref: '#/components/schemas/5GMmCause'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        secondaryRatUsageReport:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageReport'
+        secondaryRatUsageInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageInfo'
+    VsmfUpdateData:
+      required:
+      - requestIndication
+      type: object
+      properties:
+        requestIndication:
+          $ref: '#/components/schemas/RequestIndication'
+        sessionAmbr:
+          $ref: '#/components/schemas/Ambr'
+        qosFlowsAddModRequestList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowAddModifyRequestItem'
+        qosFlowsRelRequestList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowReleaseRequestItem'
+        epsBearerInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerInfo'
+        assignEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        revokeEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        modifiedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EbiArpMapping'
+        pti:
+          $ref: '#/components/schemas/ProcedureTransactionId'
+        n1SmInfoToUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        alwaysOnGranted:
+          type: boolean
+          default: false
+        hsmfPduSessionUri:
+          $ref: '#/components/schemas/Uri'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        cause:
+          $ref: '#/components/schemas/Cause'
+        n1smCause:
+          type: string
+        backOffTimer:
+          $ref: '#/components/schemas/DurationSec'
+    VsmfUpdatedData:
+      type: object
+      properties:
+        qosFlowsAddModList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowItem'
+        qosFlowsRelList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowItem'
+        qosFlowsFailedtoAddModList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowItem'
+        qosFlowsFailedtoRelList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowItem'
+        n1SmInfoFromUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        unknownN1SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        ueLocation:
+          $ref: '#/components/schemas/UserLocation'
+        ueTimeZone:
+          $ref: '#/components/schemas/TimeZone'
+        addUeLocation:
+          $ref: '#/components/schemas/UserLocation'
+        assignedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EbiArpMapping'
+        failedToAssignEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        releasedEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        secondaryRatUsageReport:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageReport'
+        secondaryRatUsageInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SecondaryRatUsageInfo'
+    StatusNotification:
+      required:
+      - statusInfo
+      type: object
+      properties:
+        statusInfo:
+          $ref: '#/components/schemas/StatusInfo'
+    QosFlowItem:
+      required:
+      - qfi
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        cause:
+          $ref: '#/components/schemas/Cause'
+    QosFlowSetupItem:
+      required:
+      - qfi
+      - qosRules
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        qosRules:
+          $ref: '#/components/schemas/Bytes'
+        ebi:
+          $ref: '#/components/schemas/EpsBearerId'
+        qosFlowDescription:
+          $ref: '#/components/schemas/Bytes'
+        qosFlowProfile:
+          $ref: '#/components/schemas/QosFlowProfile'
+      example:
+        qosFlowProfile:
+          dynamic5Qi:
+            priorityLevel: 89
+            maxDataBurstVol: 830
+            packetErrRate: packetErrRate
+            averWindow: 1481
+            resourceType: ""
+            packetDelayBudget: 1
+          rqa: ""
+          gbrQosFlowInfo:
+            maxFbrDl: maxFbrDl
+            notifControl: ""
+            maxFbrUl: maxFbrUl
+            maxPacketLossRateUl: 738
+            maxPacketLossRateDl: 414
+            guaFbrUl: guaFbrUl
+            guaFbrDl: guaFbrDl
+          additionalQosFlowInfo: ""
+          5qi: 37
+          nonDynamic5Qi:
+            priorityLevel: 76
+            maxDataBurstVol: 943
+            averWindow: 2308
+          arp:
+            priorityLevel: 9
+            preemptCap: ""
+            preemptVuln: ""
+        qosRules: ""
+        qfi: 5
+        qosFlowDescription: ""
+        ebi: 9
+    QosFlowAddModifyRequestItem:
+      required:
+      - qfi
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        ebi:
+          $ref: '#/components/schemas/EpsBearerId'
+        qosRules:
+          $ref: '#/components/schemas/Bytes'
+        qosFlowDescription:
+          $ref: '#/components/schemas/Bytes'
+        qosFlowProfile:
+          $ref: '#/components/schemas/QosFlowProfile'
+    QosFlowReleaseRequestItem:
+      required:
+      - qfi
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        qosRules:
+          $ref: '#/components/schemas/Bytes'
+        qosFlowDescription:
+          $ref: '#/components/schemas/Bytes'
+    QosFlowProfile:
+      required:
+      - 5qi
+      type: object
+      properties:
+        5qi:
+          $ref: '#/components/schemas/5Qi'
+        nonDynamic5Qi:
+          $ref: '#/components/schemas/NonDynamic5Qi'
+        dynamic5Qi:
+          $ref: '#/components/schemas/Dynamic5Qi'
+        arp:
+          $ref: '#/components/schemas/Arp'
+        gbrQosFlowInfo:
+          $ref: '#/components/schemas/GbrQosFlowInformation'
+        rqa:
+          $ref: '#/components/schemas/ReflectiveQoSAttribute'
+        additionalQosFlowInfo:
+          $ref: '#/components/schemas/AdditionalQosFlowInfo'
+      example:
+        dynamic5Qi:
+          priorityLevel: 89
+          maxDataBurstVol: 830
+          packetErrRate: packetErrRate
+          averWindow: 1481
+          resourceType: ""
+          packetDelayBudget: 1
+        rqa: ""
+        gbrQosFlowInfo:
+          maxFbrDl: maxFbrDl
+          notifControl: ""
+          maxFbrUl: maxFbrUl
+          maxPacketLossRateUl: 738
+          maxPacketLossRateDl: 414
+          guaFbrUl: guaFbrUl
+          guaFbrDl: guaFbrDl
+        additionalQosFlowInfo: ""
+        5qi: 37
+        nonDynamic5Qi:
+          priorityLevel: 76
+          maxDataBurstVol: 943
+          averWindow: 2308
+        arp:
+          priorityLevel: 9
+          preemptCap: ""
+          preemptVuln: ""
+    GbrQosFlowInformation:
+      required:
+      - guaFbrDl
+      - guaFbrUl
+      - maxFbrDl
+      - maxFbrUl
+      type: object
+      properties:
+        maxFbrDl:
+          $ref: '#/components/schemas/BitRate'
+        maxFbrUl:
+          $ref: '#/components/schemas/BitRate'
+        guaFbrDl:
+          $ref: '#/components/schemas/BitRate'
+        guaFbrUl:
+          $ref: '#/components/schemas/BitRate'
+        notifControl:
+          $ref: '#/components/schemas/NotificationControl'
+        maxPacketLossRateDl:
+          $ref: '#/components/schemas/PacketLossRate'
+        maxPacketLossRateUl:
+          $ref: '#/components/schemas/PacketLossRate'
+      example:
+        maxFbrDl: maxFbrDl
+        notifControl: ""
+        maxFbrUl: maxFbrUl
+        maxPacketLossRateUl: 738
+        maxPacketLossRateDl: 414
+        guaFbrUl: guaFbrUl
+        guaFbrDl: guaFbrDl
+    QosFlowNotifyItem:
+      required:
+      - notificationCause
+      - qfi
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        notificationCause:
+          $ref: '#/components/schemas/NotificationCause'
+    SmContextRetrieveData:
+      type: object
+      properties:
+        targetMmeCap:
+          $ref: '#/components/schemas/MmeCapabilities'
+    SmContextRetrievedData:
+      required:
+      - ueEpsPdnConnection
+      type: object
+      properties:
+        ueEpsPdnConnection:
+          $ref: '#/components/schemas/EpsPdnCnxContainer'
+      example:
+        ueEpsPdnConnection: ueEpsPdnConnection
+    MmeCapabilities:
+      type: object
+      properties:
+        nonIpSupported:
+          type: boolean
+          default: false
+    TunnelInfo:
+      required:
+      - gtpTeid
+      type: object
+      properties:
+        ipv4Addr:
+          $ref: '#/components/schemas/Ipv4Addr'
+        ipv6Addr:
+          $ref: '#/components/schemas/Ipv6Addr'
+        gtpTeid:
+          $ref: '#/components/schemas/Teid'
+      example:
+        ipv6Addr: 2001:db8:85a3::8a2e:370:7334
+        gtpTeid: gtpTeid
+        ipv4Addr: 198.51.100.1
+    StatusInfo:
+      required:
+      - resourceStatus
+      type: object
+      properties:
+        resourceStatus:
+          $ref: '#/components/schemas/ResourceStatus'
+        cause:
+          $ref: '#/components/schemas/Cause'
+    EpsPdnCnxInfo:
+      required:
+      - pgwS8cFteid
+      type: object
+      properties:
+        pgwS8cFteid:
+          $ref: '#/components/schemas/Bytes'
+        pgwNodeName:
+          $ref: '#/components/schemas/Bytes'
+      example:
+        pgwS8cFteid: ""
+        pgwNodeName: ""
+    EpsBearerInfo:
+      required:
+      - bearerLevelQoS
+      - ebi
+      - pgwS8uFteid
+      type: object
+      properties:
+        ebi:
+          $ref: '#/components/schemas/EpsBearerId'
+        pgwS8uFteid:
+          $ref: '#/components/schemas/Bytes'
+        bearerLevelQoS:
+          $ref: '#/components/schemas/Bytes'
+      example:
+        pgwS8uFteid: ""
+        ebi: 1
+        bearerLevelQoS: ""
+    PduSessionNotifyItem:
+      required:
+      - notificationCause
+      type: object
+      properties:
+        notificationCause:
+          $ref: '#/components/schemas/NotificationCause'
+    EbiArpMapping:
+      required:
+      - arp
+      - epsBearerId
+      type: object
+      properties:
+        epsBearerId:
+          $ref: '#/components/schemas/EpsBearerId'
+        arp:
+          $ref: '#/components/schemas/Arp'
+      example:
+        epsBearerId: 2
+        arp:
+          priorityLevel: 9
+          preemptCap: ""
+          preemptVuln: ""
+    SmContextCreateError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProblemDetails'
+        n1SmMsg:
+          $ref: '#/components/schemas/RefToBinaryData'
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+    SmContextUpdateError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProblemDetails'
+        n1SmMsg:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        n2SmInfoType:
+          $ref: '#/components/schemas/N2SmInfoType'
+        upCnxState:
+          $ref: '#/components/schemas/UpCnxState'
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+    PduSessionCreateError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProblemDetails'
+        n1smCause:
+          pattern: ^[A-F0-9]{2}$
+          type: string
+        n1SmInfoToUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        backOffTimer:
+          $ref: '#/components/schemas/DurationSec'
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+    HsmfUpdateError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProblemDetails'
+        pti:
+          $ref: '#/components/schemas/ProcedureTransactionId'
+        n1smCause:
+          pattern: ^[A-F0-9]{2}$
+          type: string
+        n1SmInfoToUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        backOffTimer:
+          $ref: '#/components/schemas/DurationSec'
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+    VsmfUpdateError:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProblemDetails'
+        pti:
+          $ref: '#/components/schemas/ProcedureTransactionId'
+        n1smCause:
+          pattern: ^[A-F0-9]{2}$
+          type: string
+        n1SmInfoFromUe:
+          $ref: '#/components/schemas/RefToBinaryData'
+        unknownN1SmInfo:
+          $ref: '#/components/schemas/RefToBinaryData'
+        failedToAssignEbiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EpsBearerId'
+        ngApCause:
+          $ref: '#/components/schemas/NgApCause'
+        5gMmCauseValue:
+          $ref: '#/components/schemas/5GMmCause'
+        recoveryTime:
+          $ref: '#/components/schemas/DateTime'
+    ProcedureTransactionId:
+      maximum: 255
+      minimum: 0
+      type: integer
+    EpsBearerId:
+      maximum: 15
+      minimum: 0
+      type: integer
+    EpsPdnCnxContainer:
+      type: string
+    EpsBearerContainer:
+      type: string
+    Teid:
+      pattern: ^[A-F0-9]{8}$
+      type: string
+    EpsBearerContextStatus:
+      pattern: ^[A-Fa-f0-9]{4}$
+      type: string
+    UpCnxState:
+      description: |
+        Possible values are - ACTIVATED - DEACTIVATED - ACTIVATING
+      anyOf:
+      - type: string
+        enum:
+        - ACTIVATED
+        - DEACTIVATED
+        - ACTIVATING
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    HoState:
+      description: |
+        Possible values are - NONE - PREPARING - PREPARED - COMPLETED - CANCELLED
+      anyOf:
+      - type: string
+        enum:
+        - NONE
+        - PREPARING
+        - PREPARED
+        - COMPLETED
+        - CANCELLED
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    RequestType:
+      description: |
+        Possible values are - INITIAL_REQUEST - EXISTING_PDU_SESSION - INITIAL_EMERGENCY_REQUEST - EXISTING_EMERGENCY_PDU_SESSION
+      anyOf:
+      - type: string
+        enum:
+        - INITIAL_REQUEST
+        - EXISTING_PDU_SESSION
+        - INITIAL_EMERGENCY_REQUEST
+        - EXISTING_EMERGENCY_PDU_SESSION
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    RequestIndication:
+      description: |
+        Possible values are - UE_REQ_PDU_SES_MOD - UE_REQ_PDU_SES_REL - PDU_SES_MOB - NW_REQ_PDU_SES_AUTH - NW_REQ_PDU_SES_MOD - NW_REQ_PDU_SES_REL - EBI_ASSIGNMENT_REQ
+      anyOf:
+      - type: string
+        enum:
+        - UE_REQ_PDU_SES_MOD
+        - UE_REQ_PDU_SES_REL
+        - PDU_SES_MOB
+        - NW_REQ_PDU_SES_AUTH
+        - NW_REQ_PDU_SES_MOD
+        - NW_REQ_PDU_SES_REL
+        - EBI_ASSIGNMENT_REQ
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    NotificationCause:
+      description: |
+        Possible values are - QOS_FULFILLED - QOS_NOT_FULFILLED - UP_SEC_FULFILLED - UP_SEC_NOT_FULFILLED
+      anyOf:
+      - type: string
+        enum:
+        - QOS_FULFILLED
+        - QOS_NOT_FULFILLED
+        - UP_SEC_FULFILLED
+        - UP_SEC_NOT_FULFILLED
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    Cause:
+      description: |
+        Possible values are - REL_DUE_TO_HO - EPS_FALLBACK - REL_DUE_TO_UP_SEC - DNN_CONGESTION - S_NSSAI_CONGESTION - REL_DUE_TO_REACTIVATION - 5G_AN_NOT_RESPONDING - REL_DUE_TO_SLICE_NOT_AVAILABLE - REL_DUE_TO_DUPLICATE_SESSION_ID - PDU_SESSION_STATUS_MISMATCH - HO_FAILURE - INSUFFICIENT_UP_RESOURCES - PDU_SESSION_HANDED_OVER
+      anyOf:
+      - type: string
+        enum:
+        - REL_DUE_TO_HO
+        - EPS_FALLBACK
+        - REL_DUE_TO_UP_SEC
+        - DNN_CONGESTION
+        - S_NSSAI_CONGESTION
+        - REL_DUE_TO_REACTIVATION
+        - 5G_AN_NOT_RESPONDING
+        - REL_DUE_TO_SLICE_NOT_AVAILABLE
+        - REL_DUE_TO_DUPLICATE_SESSION_ID
+        - PDU_SESSION_STATUS_MISMATCH
+        - HO_FAILURE
+        - INSUFFICIENT_UP_RESOURCES
+        - PDU_SESSION_HANDED_OVER
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    ResourceStatus:
+      description: |
+        Possible values are - RELEASED
+      anyOf:
+      - type: string
+        enum:
+        - RELEASED
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    DnnSelectionMode:
+      description: |
+        Possible values are - VERIFIED - UE_DNN_NOT_VERIFIED - NW_DNN_NOT_VERIFIED
+      anyOf:
+      - type: string
+        enum:
+        - VERIFIED
+        - UE_DNN_NOT_VERIFIED
+        - NW_DNN_NOT_VERIFIED
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    EpsInterworkingIndication:
+      description: |
+        Possible values are - NONE - WITH_N26 - WITHOUT_N26
+      anyOf:
+      - type: string
+        enum:
+        - NONE
+        - WITH_N26
+        - WITHOUT_N26
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    N2SmInfoType:
+      description: |
+        Possible values are - PDU_RES_SETUP_REQ - PDU_RES_SETUP_RSP - PDU_RES_SETUP_FAIL - PDU_RES_REL_CMD - PDU_RES_REL_RSP - PDU_RES_MOD_REQ - PDU_RES_MOD_RSP - PDU_RES_MOD_FAIL - PDU_RES_NTY - PDU_RES_NTY_REL - PDU_RES_MOD_IND - PDU_RES_MOD_CFM - PATH_SWITCH_REQ - PATH_SWITCH_SETUP_FAIL - PATH_SWITCH_REQ_ACK - PATH_SWITCH_REQ_FAIL - HANDOVER_REQUIRED - HANDOVER_CMD - HANDOVER_PREP_FAIL - HANDOVER_REQ_ACK - HANDOVER_RES_ALLOC_FAIL - SECONDARY_RAT_USAGE
+      anyOf:
+      - type: string
+        enum:
+        - PDU_RES_SETUP_REQ
+        - PDU_RES_SETUP_RSP
+        - PDU_RES_SETUP_FAIL
+        - PDU_RES_REL_CMD
+        - PDU_RES_REL_RSP
+        - PDU_RES_MOD_REQ
+        - PDU_RES_MOD_RSP
+        - PDU_RES_MOD_FAIL
+        - PDU_RES_NTY
+        - PDU_RES_NTY_REL
+        - PDU_RES_MOD_IND
+        - PDU_RES_MOD_CFM
+        - PATH_SWITCH_REQ
+        - PATH_SWITCH_SETUP_FAIL
+        - PATH_SWITCH_REQ_ACK
+        - PATH_SWITCH_REQ_FAIL
+        - HANDOVER_REQUIRED
+        - HANDOVER_CMD
+        - HANDOVER_PREP_FAIL
+        - HANDOVER_REQ_ACK
+        - HANDOVER_RES_ALLOC_FAIL
+        - SECONDARY_RAT_USAGE
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    MaxIntegrityProtectedDataRate:
+      description: |
+        Possible values are
+          - 64_KBPS
+          - MAX_UE_RATE
+      anyOf:
+      - type: string
+        enum:
+        - 64_KBPS
+        - MAX_UE_RATE
+      - type: string
+        description: |
+          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Uri'
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          $ref: '#/components/schemas/Uri'
+        cause:
+          type: string
+        invalidParams:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/InvalidParam'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+    Uri:
+      type: string
+    InvalidParam:
+      required:
+      - param
+      type: object
+      properties:
+        param:
+          type: string
+        reason:
+          type: string
+    SupportedFeatures:
+      pattern: ^[A-Fa-f0-9]*$
+      type: string
+    Supi:
+      pattern: ^(imsi-[0-9]{5,15}|nai-.+|.+)$
+      type: string
+    Pei:
+      pattern: ^(imei-[0-9]{15}|imeisv-[0-9]{16}|.+)$
+      type: string
+    Gpsi:
+      pattern: ^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|.+)$
+      type: string
+    PduSessionId:
+      maximum: 255
+      minimum: 0
+      type: integer
+    Dnn:
+      type: string
+    Snssai:
+      required:
+      - sst
+      type: object
+      properties:
+        sst:
+          maximum: 255
+          minimum: 0
+          type: integer
+        sd:
+          pattern: ^[A-Fa-f0-9]{6}$
+          type: string
+      example:
+        sd: sd
+        sst: 153
+    NfInstanceId:
+      type: string
+      format: uuid
+    Guami:
+      required:
+      - amfId
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        amfId:
+          $ref: '#/components/schemas/AmfId'
+    PlmnId:
+      required:
+      - mcc
+      - mnc
+      type: object
+      properties:
+        mcc:
+          $ref: '#/components/schemas/Mcc'
+        mnc:
+          $ref: '#/components/schemas/Mnc'
+    Mcc:
+      pattern: ^\d{3}$
+      type: string
+    Mnc:
+      pattern: ^\d{2,3}$
+      type: string
+    AmfId:
+      pattern: ^[A-Fa-f0-9]{6}$
+      type: string
+    ServiceName:
+      anyOf:
+      - type: string
+        enum:
+        - nnrf-nfm
+        - nnrf-disc
+        - nudm-sdm
+        - nudm-uecm
+        - nudm-ueau
+        - nudm-ee
+        - nudm-pp
+        - namf-comm
+        - namf-evts
+        - namf-mt
+        - namf-loc
+        - nsmf-pdusession
+        - nsmf-event-exposure
+        - nausf-auth
+        - nausf-sorprotection
+        - nausf-upuprotection
+        - nnef-pfdmanagement
+        - npcf-am-policy-control
+        - npcf-smpolicycontrol
+        - npcf-policyauthorization
+        - npcf-bdtpolicycontrol
+        - npcf-eventexposure
+        - npcf-ue-policy-control
+        - nsmsf-sms
+        - nnssf-nsselection
+        - nnssf-nssaiavailability
+        - nudr-dr
+        - nlmf-loc
+        - n5g-eir-eic
+        - nbsf-management
+        - nchf-spendinglimitcontrol
+        - nchf-convergedcharging
+        - nnwdaf-eventssubscription
+        - nnwdaf-analyticsinfo
+      - type: string
+    RefToBinaryData:
+      required:
+      - contentId
+      type: object
+      properties:
+        contentId:
+          type: string
+      example:
+        contentId: contentId
+    AccessType:
+      type: string
+      enum:
+      - 3GPP_ACCESS
+      - NON_3GPP_ACCESS
+    RatType:
+      anyOf:
+      - type: string
+        enum:
+        - NR
+        - EUTRA
+        - WLAN
+        - VIRTUAL
+      - type: string
+    PresenceState:
+      anyOf:
+      - type: string
+        enum:
+        - IN_AREA
+        - OUT_OF_AREA
+        - UNKNOWN
+        - INACTIVE
+      - type: string
+    UserLocation:
+      type: object
+      properties:
+        eutraLocation:
+          $ref: '#/components/schemas/EutraLocation'
+        nrLocation:
+          $ref: '#/components/schemas/NrLocation'
+        n3gaLocation:
+          $ref: '#/components/schemas/N3gaLocation'
+    EutraLocation:
+      required:
+      - ecgi
+      - tai
+      type: object
+      properties:
+        tai:
+          $ref: '#/components/schemas/Tai'
+        ecgi:
+          $ref: '#/components/schemas/Ecgi'
+        ageOfLocationInformation:
+          maximum: 32767
+          minimum: 0
+          type: integer
+        ueLocationTimestamp:
+          $ref: '#/components/schemas/DateTime'
+        geographicalInformation:
+          pattern: ^[0-9A-F]{16}$
+          type: string
+        geodeticInformation:
+          pattern: ^[0-9A-F]{20}$
+          type: string
+        globalNgenbId:
+          $ref: '#/components/schemas/GlobalRanNodeId'
+    Tai:
+      required:
+      - plmnId
+      - tac
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        tac:
+          $ref: '#/components/schemas/Tac'
+    Tac:
+      pattern: (^[A-Fa-f0-9]{4}$)|(^[A-Fa-f0-9]{6}$)
+      type: string
+    Ecgi:
+      required:
+      - eutraCellId
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        eutraCellId:
+          $ref: '#/components/schemas/EutraCellId'
+    EutraCellId:
+      pattern: ^[A-Fa-f0-9]{7}$
+      type: string
+    DateTime:
+      type: string
+      format: date-time
+    GlobalRanNodeId:
+      required:
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        n3IwfId:
+          $ref: '#/components/schemas/N3IwfId'
+        gNbId:
+          $ref: '#/components/schemas/GNbId'
+        ngeNbId:
+          $ref: '#/components/schemas/NgeNbId'
+      oneOf:
+      - required:
+        - n3IwfId
+      - required:
+        - gNbId
+      - required:
+        - ngeNbId
+    N3IwfId:
+      pattern: ^[A-Fa-f0-9]+$
+      type: string
+    GNbId:
+      required:
+      - bitLength
+      - gNBValue
+      type: object
+      properties:
+        bitLength:
+          maximum: 32
+          minimum: 22
+          type: integer
+        gNBValue:
+          pattern: ^[A-Fa-f0-9]{6,8}$
+          type: string
+    NgeNbId:
+      pattern: ^(MacroNGeNB-[A-Fa-f0-9]{5}|LMacroNGeNB-[A-Fa-f0-9]{6}|SMacroNGeNB-[A-Fa-f0-9]{5})$
+      type: string
+    NrLocation:
+      required:
+      - ncgi
+      - tai
+      type: object
+      properties:
+        tai:
+          $ref: '#/components/schemas/Tai'
+        ncgi:
+          $ref: '#/components/schemas/Ncgi'
+        ageOfLocationInformation:
+          maximum: 32767
+          minimum: 0
+          type: integer
+        ueLocationTimestamp:
+          $ref: '#/components/schemas/DateTime'
+        geographicalInformation:
+          pattern: ^[0-9A-F]{16}$
+          type: string
+        geodeticInformation:
+          pattern: ^[0-9A-F]{20}$
+          type: string
+        globalGnbId:
+          $ref: '#/components/schemas/GlobalRanNodeId'
+    Ncgi:
+      required:
+      - nrCellId
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        nrCellId:
+          $ref: '#/components/schemas/NrCellId'
+    NrCellId:
+      pattern: ^[A-Fa-f0-9]{9}$
+      type: string
+    N3gaLocation:
+      type: object
+      properties:
+        n3gppTai:
+          $ref: '#/components/schemas/Tai'
+        n3IwfId:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+        ueIpv4Addr:
+          $ref: '#/components/schemas/Ipv4Addr'
+        ueIpv6Addr:
+          $ref: '#/components/schemas/Ipv6Addr'
+        portNumber:
+          $ref: '#/components/schemas/Uinteger'
+    Ipv4Addr:
+      pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
+      type: string
+      example: 198.51.100.1
+    Ipv6Addr:
+      type: string
+      example: 2001:db8:85a3::8a2e:370:7334
+      allOf:
+      - pattern: ^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))$
+      - pattern: ^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))$
+    Uinteger:
+      minimum: 0
+      type: integer
+    TimeZone:
+      type: string
+    BackupAmfInfo:
+      required:
+      - backupAmf
+      type: object
+      properties:
+        backupAmf:
+          $ref: '#/components/schemas/AmfName'
+        guamiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Guami'
+    AmfName:
+      type: string
+    TraceData:
+      required:
+      - eventList
+      - neTypeList
+      - traceDepth
+      - traceRef
+      type: object
+      properties:
+        traceRef:
+          pattern: ^[0-9]{3}[0-9]{2,3}-[A-Fa-f0-9]{6}$
+          type: string
+        traceDepth:
+          $ref: '#/components/schemas/TraceDepth'
+        neTypeList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+        eventList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+        collectionEntityIpv4Addr:
+          $ref: '#/components/schemas/Ipv4Addr'
+        collectionEntityIpv6Addr:
+          $ref: '#/components/schemas/Ipv6Addr'
+        interfaceList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+      nullable: true
+    TraceDepth:
+      anyOf:
+      - type: string
+        enum:
+        - MINIMUM
+        - MEDIUM
+        - MAXIMUM
+        - MINIMUM_WO_VENDOR_EXTENSION
+        - MEDIUM_WO_VENDOR_EXTENSION
+        - MAXIMUM_WO_VENDOR_EXTENSION
+      - type: string
+    NfGroupId:
+      type: string
+    NgRanTargetId:
+      required:
+      - ranNodeId
+      - tai
+      type: object
+      properties:
+        ranNodeId:
+          $ref: '#/components/schemas/GlobalRanNodeId'
+        tai:
+          $ref: '#/components/schemas/Tai'
+    NgApCause:
+      required:
+      - group
+      - value
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/Uinteger'
+        value:
+          $ref: '#/components/schemas/Uinteger'
+    5GMmCause:
+      $ref: '#/components/schemas/Uinteger'
+    Bytes:
+      type: string
+      format: byte
+    RoamingChargingProfile:
+      type: object
+      properties:
+        triggers:
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/Trigger'
+        partialRecordMethod:
+          $ref: '#/components/schemas/PartialRecordMethod'
+      example:
+        partialRecordMethod: ""
+        triggers:
+        - timeLimit: 1
+          volumeLimit64: 0
+          maxNumberOfccc: 0
+          volumeLimit: 0
+          triggerType: ""
+          triggerCategory: ""
+        - timeLimit: 1
+          volumeLimit64: 0
+          maxNumberOfccc: 0
+          volumeLimit: 0
+          triggerType: ""
+          triggerCategory: ""
+    Trigger:
+      required:
+      - triggerCategory
+      - triggerType
+      type: object
+      properties:
+        triggerType:
+          $ref: '#/components/schemas/TriggerType'
+        triggerCategory:
+          $ref: '#/components/schemas/TriggerCategory'
+        timeLimit:
+          $ref: '#/components/schemas/DurationSec'
+        volumeLimit:
+          $ref: '#/components/schemas/Uint32'
+        volumeLimit64:
+          $ref: '#/components/schemas/Uint64'
+        maxNumberOfccc:
+          $ref: '#/components/schemas/Uint32'
+      example:
+        timeLimit: 1
+        volumeLimit64: 0
+        maxNumberOfccc: 0
+        volumeLimit: 0
+        triggerType: ""
+        triggerCategory: ""
+    TriggerType:
+      anyOf:
+      - type: string
+        enum:
+        - QUOTA_THRESHOLD
+        - QHT
+        - FINAL
+        - QUOTA_EXHAUSTED
+        - VALIDITY_TIME
+        - OTHER_QUOTA_TYPE
+        - FORCED_REAUTHORISATION
+        - UNUSED_QUOTA_TIMER
+        - UNIT_COUNT_INACTIVITY_TIMER
+        - ABNORMAL_RELEASE
+        - QOS_CHANGE
+        - VOLUME_LIMIT
+        - TIME_LIMIT
+        - PLMN_CHANGE
+        - USER_LOCATION_CHANGE
+        - RAT_CHANGE
+        - UE_TIMEZONE_CHANGE
+        - TARIFF_TIME_CHANGE
+        - MAX_NUMBER_OF_CHANGES_IN_CHARGING_CONDITIONS
+        - MANAGEMENT_INTERVENTION
+        - CHANGE_OF_UE_PRESENCE_IN_PRESENCE_REPORTING_AREA
+        - CHANGE_OF_3GPP_PS_DATA_OFF_STATUS
+        - SERVING_NODE_CHANGE
+        - REMOVAL_OF_UPF
+        - ADDITION_OF_UPF
+        - START_OF_SERVICE_DATA_FLOW
+      - type: string
+    TriggerCategory:
+      anyOf:
+      - type: string
+        enum:
+        - IMMEDIATE_REPORT
+        - DEFERRED_REPORT
+      - type: string
+    PartialRecordMethod:
+      anyOf:
+      - type: string
+        enum:
+        - DEFAULT
+        - INDIVIDUAL
+      - type: string
+    PduSessionType:
+      anyOf:
+      - type: string
+        enum:
+        - IPV4
+        - IPV6
+        - IPV4V6
+        - UNSTRUCTURED
+        - ETHERNET
+      - type: string
+    Ambr:
+      required:
+      - downlink
+      - uplink
+      type: object
+      properties:
+        uplink:
+          $ref: '#/components/schemas/BitRate'
+        downlink:
+          $ref: '#/components/schemas/BitRate'
+      example:
+        uplink: uplink
+        downlink: downlink
+    BitRate:
+      pattern: ^\d+(\.\d+)? (bps|Kbps|Mbps|Gbps|Tbps)$
+      type: string
+    Ipv6Prefix:
+      type: string
+      example: 2001:db8:abcd:12::0/64
+      allOf:
+      - pattern: ^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))(\/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))$
+      - pattern: ^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))(\/.+)$
+    UpSecurity:
+      required:
+      - upConfid
+      - upIntegr
+      type: object
+      properties:
+        upIntegr:
+          $ref: '#/components/schemas/UpIntegrity'
+        upConfid:
+          $ref: '#/components/schemas/UpConfidentiality'
+      example:
+        upIntegr: ""
+        upConfid: ""
+    UpIntegrity:
+      anyOf:
+      - type: string
+        enum:
+        - REQUIRED
+        - PREFERRED
+        - NOT_NEEDED
+      - type: string
+    UpConfidentiality:
+      anyOf:
+      - type: string
+        enum:
+        - REQUIRED
+        - PREFERRED
+        - NOT_NEEDED
+      - type: string
+    SecondaryRatUsageReport:
+      required:
+      - qosFlowsUsageData
+      - secondaryRatType
+      type: object
+      properties:
+        secondaryRatType:
+          $ref: '#/components/schemas/RatType'
+        qosFlowsUsageData:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowUsageReport'
+    QosFlowUsageReport:
+      required:
+      - downlinkVolume
+      - endTimeStamp
+      - qfi
+      - startTimeStamp
+      - uplinkVolume
+      type: object
+      properties:
+        qfi:
+          $ref: '#/components/schemas/Qfi'
+        startTimeStamp:
+          $ref: '#/components/schemas/DateTime'
+        endTimeStamp:
+          $ref: '#/components/schemas/DateTime'
+        downlinkVolume:
+          $ref: '#/components/schemas/Int64'
+        uplinkVolume:
+          $ref: '#/components/schemas/Int64'
+    Qfi:
+      maximum: 63
+      minimum: 0
+      type: integer
+    Int64:
+      type: integer
+      format: int64
+    SecondaryRatUsageInfo:
+      required:
+      - secondaryRatType
+      type: object
+      properties:
+        secondaryRatType:
+          $ref: '#/components/schemas/RatType'
+        qosFlowsUsageData:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QosFlowUsageReport'
+        pduSessionUsageData:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/VolumeTimedReport'
+    VolumeTimedReport:
+      required:
+      - downlinkVolume
+      - endTimeStamp
+      - startTimeStamp
+      - uplinkVolume
+      type: object
+      properties:
+        startTimeStamp:
+          $ref: '#/components/schemas/DateTime'
+        endTimeStamp:
+          $ref: '#/components/schemas/DateTime'
+        downlinkVolume:
+          $ref: '#/components/schemas/Int64'
+        uplinkVolume:
+          $ref: '#/components/schemas/Int64'
+    DurationSec:
+      type: integer
+    5Qi:
+      maximum: 255
+      minimum: 0
+      type: integer
+    NonDynamic5Qi:
+      minProperties: 0
+      type: object
+      properties:
+        priorityLevel:
+          $ref: '#/components/schemas/5QiPriorityLevel'
+        averWindow:
+          $ref: '#/components/schemas/AverWindow'
+        maxDataBurstVol:
+          $ref: '#/components/schemas/MaxDataBurstVol'
+      example:
+        priorityLevel: 76
+        maxDataBurstVol: 943
+        averWindow: 2308
+    5QiPriorityLevel:
+      maximum: 127
+      minimum: 1
+      type: integer
+    AverWindow:
+      maximum: 4095
+      minimum: 1
+      type: integer
+      default: 2000
+    MaxDataBurstVol:
+      maximum: 4095
+      minimum: 1
+      type: integer
+    Dynamic5Qi:
+      required:
+      - packetDelayBudget
+      - packetErrRate
+      - priorityLevel
+      - resourceType
+      type: object
+      properties:
+        resourceType:
+          $ref: '#/components/schemas/QosResourceType'
+        priorityLevel:
+          $ref: '#/components/schemas/5QiPriorityLevel'
+        packetDelayBudget:
+          $ref: '#/components/schemas/PacketDelBudget'
+        packetErrRate:
+          $ref: '#/components/schemas/PacketErrRate'
+        averWindow:
+          $ref: '#/components/schemas/AverWindow'
+        maxDataBurstVol:
+          $ref: '#/components/schemas/MaxDataBurstVol'
+      example:
+        priorityLevel: 89
+        maxDataBurstVol: 830
+        packetErrRate: packetErrRate
+        averWindow: 1481
+        resourceType: ""
+        packetDelayBudget: 1
+    QosResourceType:
+      anyOf:
+      - type: string
+        enum:
+        - NON_GBR
+        - NON_CRITICAL_GBR
+        - CRITICAL_GBR
+      - type: string
+    PacketDelBudget:
+      minimum: 1
+      type: integer
+    PacketErrRate:
+      pattern: ^([0-9]E-[0-9])$
+      type: string
+    Arp:
+      required:
+      - preemptCap
+      - preemptVuln
+      - priorityLevel
+      type: object
+      properties:
+        priorityLevel:
+          $ref: '#/components/schemas/ArpPriorityLevel'
+        preemptCap:
+          $ref: '#/components/schemas/PreemptionCapability'
+        preemptVuln:
+          $ref: '#/components/schemas/PreemptionVulnerability'
+      example:
+        priorityLevel: 9
+        preemptCap: ""
+        preemptVuln: ""
+    ArpPriorityLevel:
+      maximum: 15
+      minimum: 1
+      type: integer
+      description: nullable true shall not be used for this attribute
+      nullable: true
+    PreemptionCapability:
+      anyOf:
+      - type: string
+        enum:
+        - NOT_PREEMPT
+        - MAY_PREEMPT
+      - type: string
+    PreemptionVulnerability:
+      anyOf:
+      - type: string
+        enum:
+        - NOT_PREEMPTABLE
+        - PREEMPTABLE
+      - type: string
+    ReflectiveQoSAttribute:
+      anyOf:
+      - type: string
+        enum:
+        - RQOS
+        - NO_RQOS
+      - type: string
+    AdditionalQosFlowInfo:
+      nullable: true
+      anyOf:
+      - type: string
+        enum:
+        - MORE_LIKELY
+      - type: string
+    NotificationControl:
+      anyOf:
+      - type: string
+        enum:
+        - REQUESTED
+        - NOT_REQUESTED
+      - type: string
+    PacketLossRate:
+      maximum: 1000
+      minimum: 0
+      type: integer
+    Uint32:
+      minimum: 0
+      type: integer
+      format: int32
+    Uint64:
+      minimum: 0
+      type: integer
+      format: int64
+    body:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextCreateData'
+        binaryDataN1SmMessage:
+          type: string
+          format: binary
+    inline_response_201:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextCreatedData'
+        binaryDataN2SmInformation:
+          type: string
+          format: binary
+    inline_response_400:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextCreateError'
+        binaryDataN1SmMessage:
+          type: string
+          format: binary
+    body_1:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextUpdateData'
+        binaryDataN1SmMessage:
+          type: string
+          format: binary
+        binaryDataN2SmInformation:
+          type: string
+          format: binary
+        binaryDataN2SmInformationExt1:
+          type: string
+          format: binary
+    inline_response_200:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextUpdatedData'
+        binaryDataN1SmMessage:
+          type: string
+          format: binary
+        binaryDataN2SmInformation:
+          type: string
+          format: binary
+    inline_response_400_1:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextUpdateError'
+        binaryDataN1SmMessage:
+          type: string
+          format: binary
+        binaryDataN2SmInformation:
+          type: string
+          format: binary
+    body_2:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/SmContextReleaseData'
+        binaryDataN2SmInformation:
+          type: string
+          format: binary
+    body_3:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/PduSessionCreateData'
+        binaryDataN1SmInfoFromUe:
+          type: string
+          format: binary
+        binaryDataUnknownN1SmInfo:
+          type: string
+          format: binary
+    inline_response_201_1:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/PduSessionCreatedData'
+        binaryDataN1SmInfoToUe:
+          type: string
+          format: binary
+    inline_response_400_2:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/PduSessionCreateError'
+        binaryDataN1SmInfoToUe:
+          type: string
+          format: binary
+    body_4:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/HsmfUpdateData'
+        binaryDataN1SmInfoFromUe:
+          type: string
+          format: binary
+        binaryDataUnknownN1SmInfo:
+          type: string
+          format: binary
+    inline_response_200_1:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/HsmfUpdatedData'
+        binaryDataN1SmInfoToUe:
+          type: string
+          format: binary
+    inline_response_400_3:
+      type: object
+      properties:
+        jsonData:
+          $ref: '#/components/schemas/HsmfUpdateError'
+        binaryDataN1SmInfoToUe:
+          type: string
+          format: binary
+  responses:
+    PduSessionCreateError:
+      description: unsuccessful creation of a PDU session
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PduSessionCreateError'
+        multipart/related:
+          schema:
+            $ref: '#/components/schemas/inline_response_400_2'
+          encoding:
+            jsonData:
+              contentType: application/json
+              style: form
+            binaryDataN1SmInfoToUe:
+              contentType: application/vnd.3gpp.5gnas
+              headers:
+                Content-Id:
+                  style: simple
+                  explode: false
+                  schema:
+                    type: string
+              style: form
+    HsmfUpdateError:
+      description: unsuccessful update of a PDU session
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HsmfUpdateError'
+        multipart/related:
+          schema:
+            $ref: '#/components/schemas/inline_response_400_3'
+          encoding:
+            jsonData:
+              contentType: application/json
+              style: form
+            binaryDataN1SmInfoToUe:
+              contentType: application/vnd.3gpp.5gnas
+              headers:
+                Content-Id:
+                  style: simple
+                  explode: false
+                  schema:
+                    type: string
+              style: form
+    VsmfUpdateError:
+      description: unsuccessful update of a PDU session
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VsmfUpdateError'
+        multipart/related:
+          schema:
+            type: object
+            properties:
+              jsonData:
+                $ref: '#/components/schemas/VsmfUpdateError'
+              binaryDataN1SmInfoFromUe:
+                type: string
+                format: binary
+              binaryDataUnknownN1SmInfo:
+                type: string
+                format: binary
+          encoding:
+            jsonData:
+              contentType: application/json
+              style: form
+            binaryDataN1SmInfoFromUe:
+              contentType: application/vnd.3gpp.5gnas
+              headers:
+                Content-Id:
+                  style: simple
+                  explode: false
+                  schema:
+                    type: string
+              style: form
+            binaryDataUnknownN1SmInfo:
+              contentType: application/vnd.3gpp.5gnas
+              headers:
+                Content-Id:
+                  style: simple
+                  explode: false
+                  schema:
+                    type: string
+              style: form
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: '{nrfApiRoot}/oauth2/token'
+          scopes:
+            nsmf-pdusession: Access to the nsmf-pdusession API
+      x-tokenInfoFunc: swagger_server.controllers.authorization_controller.check_oAuth2ClientCredentials
+      x-scopeValidateFunc: swagger_server.controllers.authorization_controller.validate_scope_oAuth2ClientCredentials
+

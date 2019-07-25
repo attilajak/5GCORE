@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>Welcome to 5G UE Simulator!</h1>
+		<form action="/ueregister" method="post">
+    <button id="regstart" name="registerBtn" type="submit">UE Register Request</button>
+		</form>
+		<p></p>
+		<p></p>
+		<p></p>
+		<!--<p id="register"></p>>-->
+		<form action="/establishpdu" method="post">
+    <button id="pdustart" name="establishPduBtn" type="submit">Establish PDU Session</button>
+		</form>
+		<p></p>
+		<p></p>
+		<p></p>
+		<form action="/uederegister" method="post">
+    <button id="dereg" name="DeregBtn" type="submit">UE DeRegister Request</button>
+		</form>
+			<!--<p id="pdusession"></p>-->
+		{% if regsuccess == 0 %}
+			<!--<script> document.getElementById("register").innerHTML = "UE Not Registered"; </script>
+			<script> document.getElementById("register").style.color = "black"; </script>-->
+			<script> document.getElementById("regstart").style = "background-color:yellow";</script>
+			<script> document.getElementById("dereg").disabled = true;</script>
+		{% endif %}
+		{% if deregsuccess == 1 %}
+			<script> document.getElementById("dereg").style = "background-color:green";</script>
+			<script> document.getElementById("dereg").style.color = "black";</script>
+			<script> document.getElementById("dereg").disabled = true;</script>
+		{% endif %}
+		{% if deregsuccess == 2 %}
+			<script> document.getElementById("dereg").style = "background-color:red";</script>
+			<script> document.getElementById("dereg").disabled = false;</script>
+		{% endif %}
+		{% if regsuccess == 1 %}
+			<!--<script> document.getElementById("register").innerHTML = "UE Registered"; </script>
+			<script> document.getElementById("register").style.color = "green"; </script>-->
+			<script> document.getElementById("regstart").style = "background-color:green";</script>
+			<script> document.getElementById("dereg").style = "background-color:yellow";</script>
+			<script> document.getElementById("dereg").disabled = false;</script>
+		{% endif %}
+		{% if regsuccess == 2 %}
+			<!--<script> document.getElementById("register").innerHTML = "UE Registration Failed"; </script>
+			<script> document.getElementById("register").style.color = "red"; </script>-->
+			<script> document.getElementById("regstart").style = "background-color:red";</script>
+			<script> document.getElementById("dereg").disabled = true;</script>
+		{% endif %}
+		{% if pdusuccess == 0 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Not Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "black"; </script>-->
+			<script> document.getElementById("pdustart").style = "background-color:yellow";</script>
+		{% endif %}
+		{% if pdusuccess == 1 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "green"; </script>-->
+			<script> document.getElementById("pdustart").style = "background-color:green";</script>
+		{% endif %}
+		{% if pdusuccess == 2 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Establishment Failed"; </script>
+			<script> document.getElementById("pdusession").style.color = "red"; </script>-->
+			<script> document.getElementById("pdustart").style = "background-color:red";</script>
+		{% endif %}
+
+    </body>
+
+</html>
