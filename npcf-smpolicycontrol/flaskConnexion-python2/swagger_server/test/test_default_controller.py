@@ -10,7 +10,9 @@ from swagger_server.models.sm_policy_context_data import SmPolicyContextData  # 
 from swagger_server.models.sm_policy_control import SmPolicyControl  # noqa: E501
 from swagger_server.models.sm_policy_decision import SmPolicyDecision  # noqa: E501
 from swagger_server.models.sm_policy_delete_data import SmPolicyDeleteData  # noqa: E501
+from swagger_server.models.sm_policy_notification import SmPolicyNotification  # noqa: E501
 from swagger_server.models.sm_policy_update_context_data import SmPolicyUpdateContextData  # noqa: E501
+from swagger_server.models.termination_notification import TerminationNotification  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
@@ -64,6 +66,34 @@ class TestDefaultController(BaseTestCase):
         body = SmPolicyUpdateContextData()
         response = self.client.open(
             '/sm-policies/{smPolicyId}/update'.format(sm_policy_id='sm_policy_id_example'),
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_smpolicynotify_terminate_post(self):
+        """Test case for smpolicynotify_terminate_post
+
+        
+        """
+        body = TerminationNotification()
+        response = self.client.open(
+            '/smpolicynotify/terminate',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_smpolicynotify_update_post(self):
+        """Test case for smpolicynotify_update_post
+
+        
+        """
+        body = SmPolicyNotification()
+        response = self.client.open(
+            '/smpolicynotify/update',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')

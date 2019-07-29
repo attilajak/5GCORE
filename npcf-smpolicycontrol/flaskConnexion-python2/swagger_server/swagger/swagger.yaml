@@ -261,6 +261,163 @@ paths:
                 default:
                   description: Generic Error
       x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sm-policies/notify/update:
+    post:
+      operationId: sm_policies_notify_update_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmPolicyNotification'
+        required: true
+      responses:
+        200:
+          description: OK. The current applicable values corresponding to the policy
+            control request trigger is reported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UeCampingRep'
+        204:
+          description: No Content, Notification was succesfull
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorReport'
+        401:
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /sm-policies/notify/terminate:
+    post:
+      operationId: sm_policies_notify_terminate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminationNotification'
+        required: true
+      responses:
+        204:
+          description: No Content, Notification was succesful
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        411:
+          description: Length Required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        413:
+          description: Payload Too Large
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        429:
+          description: Too Many Requests
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Generic Error
+      x-openapi-router-controller: swagger_server.controllers.default_controller
   /sm-policies/{smPolicyId}:
     get:
       operationId: sm_policies_sm_policy_id_get
@@ -539,7 +696,7 @@ components:
                   mcc: mcc
                 n3IwfId: n3IwfId
                 ngeNbId: ngeNbId
-              ageOfLocationInformation: 4803
+              ageOfLocationInformation: 2624
               tai:
                 tac: tac
                 plmnId:
@@ -563,7 +720,7 @@ components:
                   mcc: mcc
                 n3IwfId: n3IwfId
                 ngeNbId: ngeNbId
-              ageOfLocationInformation: 19536
+              ageOfLocationInformation: 19750
               ncgi:
                 plmnId:
                   mnc: mnc
@@ -587,8 +744,8 @@ components:
               n3IwfId: n3IwfId
               portNumber: 0
           subsDefQos:
-            priorityLevel: 89
-            5qi: 58
+            priorityLevel: 76
+            5qi: 37
             arp:
               priorityLevel: 9
               preemptCap: ""
@@ -618,7 +775,7 @@ components:
           refQosIndication: true
           sliceInfo:
             sd: sd
-            sst: 92
+            sst: 58
           supi: supi
           traceReq:
             eventList: eventList
@@ -628,7 +785,7 @@ components:
             interfaceList: interfaceList
             neTypeList: neTypeList
             traceDepth: ""
-          numOfPackFilter: 9
+          numOfPackFilter: 5
           qosFlowUsage: ""
           chargEntityAddr:
             anChargIpv6Addr: 2001:db8:85a3::8a2e:370:7334
@@ -1000,7 +1157,7 @@ components:
                 mcc: mcc
               n3IwfId: n3IwfId
               ngeNbId: ngeNbId
-            ageOfLocationInformation: 4803
+            ageOfLocationInformation: 2624
             tai:
               tac: tac
               plmnId:
@@ -1024,7 +1181,7 @@ components:
                 mcc: mcc
               n3IwfId: n3IwfId
               ngeNbId: ngeNbId
-            ageOfLocationInformation: 19536
+            ageOfLocationInformation: 19750
             ncgi:
               plmnId:
                 mnc: mnc
@@ -1048,8 +1205,8 @@ components:
             n3IwfId: n3IwfId
             portNumber: 0
         subsDefQos:
-          priorityLevel: 89
-          5qi: 58
+          priorityLevel: 76
+          5qi: 37
           arp:
             priorityLevel: 9
             preemptCap: ""
@@ -1079,7 +1236,7 @@ components:
         refQosIndication: true
         sliceInfo:
           sd: sd
-          sst: 92
+          sst: 58
         supi: supi
         traceReq:
           eventList: eventList
@@ -1089,7 +1246,7 @@ components:
           interfaceList: interfaceList
           neTypeList: neTypeList
           traceDepth: ""
-        numOfPackFilter: 9
+        numOfPackFilter: 5
         qosFlowUsage: ""
         chargEntityAddr:
           anChargIpv6Addr: 2001:db8:85a3::8a2e:370:7334
@@ -2285,6 +2442,82 @@ components:
           $ref: '#/components/schemas/UserLocation'
         ueTimeZone:
           $ref: '#/components/schemas/TimeZone'
+      example:
+        accessType: 3GPP_ACCESS
+        servNfId:
+          servNfInstId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          guami:
+            plmnId:
+              mnc: mnc
+              mcc: mcc
+            amfId: amfId
+          anGwAddr:
+            anGwIpv6Addr: 2001:db8:85a3::8a2e:370:7334
+            anGwIpv4Addr: 198.51.100.1
+        servingNetwork:
+          mnc: mnc
+          mcc: mcc
+        ueTimeZone: ueTimeZone
+        ratType: ""
+        userLocationInfo:
+          eutraLocation:
+            geographicalInformation: geographicalInformation
+            globalNgenbId:
+              gNbId:
+                bitLength: 27
+                gNBValue: gNBValue
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+              n3IwfId: n3IwfId
+              ngeNbId: ngeNbId
+            ageOfLocationInformation: 2624
+            tai:
+              tac: tac
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            ueLocationTimestamp: 2000-01-23T04:56:07.000+00:00
+            geodeticInformation: geodeticInformation
+            ecgi:
+              eutraCellId: eutraCellId
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+          nrLocation:
+            geographicalInformation: geographicalInformation
+            globalGnbId:
+              gNbId:
+                bitLength: 27
+                gNBValue: gNBValue
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+              n3IwfId: n3IwfId
+              ngeNbId: ngeNbId
+            ageOfLocationInformation: 19750
+            ncgi:
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+              nrCellId: nrCellId
+            tai:
+              tac: tac
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            ueLocationTimestamp: 2000-01-23T04:56:07.000+00:00
+            geodeticInformation: geodeticInformation
+          n3gaLocation:
+            ueIpv4Addr: 198.51.100.1
+            n3gppTai:
+              tac: tac
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            ueIpv6Addr: 2001:db8:85a3::8a2e:370:7334
+            n3IwfId: n3IwfId
+            portNumber: 0
     RuleReport:
       required:
       - pccRuleIds
@@ -2864,7 +3097,7 @@ components:
               mcc: mcc
             n3IwfId: n3IwfId
             ngeNbId: ngeNbId
-          ageOfLocationInformation: 4803
+          ageOfLocationInformation: 2624
           tai:
             tac: tac
             plmnId:
@@ -2888,7 +3121,7 @@ components:
               mcc: mcc
             n3IwfId: n3IwfId
             ngeNbId: ngeNbId
-          ageOfLocationInformation: 19536
+          ageOfLocationInformation: 19750
           ncgi:
             plmnId:
               mnc: mnc
@@ -2946,7 +3179,7 @@ components:
             mcc: mcc
           n3IwfId: n3IwfId
           ngeNbId: ngeNbId
-        ageOfLocationInformation: 4803
+        ageOfLocationInformation: 2624
         tai:
           tac: tac
           plmnId:
@@ -3097,7 +3330,7 @@ components:
             mcc: mcc
           n3IwfId: n3IwfId
           ngeNbId: ngeNbId
-        ageOfLocationInformation: 19536
+        ageOfLocationInformation: 19750
         ncgi:
           plmnId:
             mnc: mnc
@@ -3205,8 +3438,8 @@ components:
         priorityLevel:
           $ref: '#/components/schemas/5QiPriorityLevel'
       example:
-        priorityLevel: 89
-        5qi: 58
+        priorityLevel: 76
+        5qi: 37
         arp:
           priorityLevel: 9
           preemptCap: ""
@@ -3316,7 +3549,7 @@ components:
           type: string
       example:
         sd: sd
-        sst: 92
+        sst: 58
     NfInstanceId:
       type: string
       format: uuid

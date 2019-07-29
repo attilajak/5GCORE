@@ -46,7 +46,7 @@ def SMFDoingSomething(args):
 	print(CurrentPath+":31   [SMF][INFO]   "+"SMF SENDS N4 SESSION ESTABILISHMENT REQUEST TO UPF")
 	print(CurrentPath+":32   [SMF][INFO]   "+"post http://127.0.0.1:5012/nupf/v1/UpfSmfInterface")
 	N4SessionEstabilishmentReq = "http://127.0.0.1:5012/nupf/v1/UpfSmfInterface"
-	N4SessionMsg = {"imsi":args['imsi'],"CNTunnelID":"23124","InactivityTimer":"20s","MsgType":"N4SessionEstabilishmentReq","CreateDataConnection":args['CreateDataConnection']}
+	N4SessionMsg = {"imsi":"208930000000001","CNTunnelID":"23124","InactivityTimer":"20s","MsgType":"N4SessionEstabilishmentReq","CreateDataConnection":"CreateDataConnection"}
 	r = requests.post(N4SessionEstabilishmentReq,data=N4SessionMsg)
 	if r.status_code == 200:
 		print(CurrentPath+":37   [SMF][INFO]   "+"SMF RECEIVES N4 SESSION ESTABILISHMENT RESPONSE FROM UPF")
