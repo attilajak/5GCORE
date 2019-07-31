@@ -7,6 +7,7 @@ import requests
 #from .. import schemas
 from flask_restful import Resource,reqparse
 import json
+from simconf import conf_json
 
 
 from .. import users
@@ -20,7 +21,7 @@ class SDMSUBSCRIBE(Resource):
 
     def post(self,supi):
         SubscribeData = {"nfInstanceId":"3fa85f64-5717-4562-b3fc-2c963f66afa6","implicitUnsubscribe":True,"expires":"2019-07-17T10:26:39.748Z","callbackReference":"string","monitoredResourceUris":["string"],"singleNssai":{"sst":0,"sd":"string"},"dnn":"string","subscriptionId":"string","plmnId":{"mcc":"string","mnc":"string"}}
-        UdrSubscribeUri = "http://127.0.0.1:8080/subscription-data/63465656/context-data/sdm-subscriptions"
+        UdrSubscribeUri = "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/63465656/context-data/sdm-subscriptions"
         headers = { "Content-Type" : "application/json"}
         SubscribeDatajson = json.dumps(SubscribeData)
         r = requests.post(UdrSubscribeUri,data=SubscribeDatajson,headers=headers)

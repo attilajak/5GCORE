@@ -4,6 +4,7 @@ import operator
 from flask import request, g
 import requests
 import json
+from simconf import conf_json
 #from . import Resource
 #from .. import schemas
 from flask_restful import Resource,reqparse
@@ -18,7 +19,7 @@ class AMDATA(Resource):
         self.info = 0;
 
     def get(self,supi):
-        UdrGetAmDataUri =  "http://127.0.0.1:8080/subscription-data/365464/123456/provisioned-data/am-data"
+        UdrGetAmDataUri =  "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/365464/123456/provisioned-data/am-data"
         r = requests.get(UdrGetAmDataUri)
         if r.status_code == 200:
             UdrAmData = r.json()

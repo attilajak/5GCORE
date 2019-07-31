@@ -8,6 +8,8 @@ import json
 #from .. import schemas
 from flask_restful import Resource,reqparse
 
+from simconf import conf_json
+
 from .. import users
 #from users import Users
 
@@ -38,7 +40,7 @@ class AMF3GPPREGISTER(Resource):
 
     def put(self,ueId):
         #Write amf UE context data into UDR
-        SendtoUDRMsg = "http://127.0.0.1:8080/subscription-data/123/context-data/amf-3gpp-access"
+        SendtoUDRMsg = "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/123/context-data/amf-3gpp-access"
         access3gppInfo = { "amfInstanceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "supportedFeatures": "string", "purgeFlag": True, "pei": "string", "deregCallbackUri": "string", "pcscfRestorationCallbackUri": "string", "initialRegistrationInd": True, "guami": { "plmnId": { "mcc": "string", "mnc": "string" }, "amfId": "string" }, "backupAmfInfo": [ { "backupAmf": "string", "guamiList": [ { "plmnId": { "mcc": "string", "mnc": "string" }, "amfId": "string" } ] } ], "drFlag": True, "urrpIndicator": True, "amfEeSubscriptionId": "string", "epsInterworkingInfo": { "epsIwkPgws": { "additionalProp1": { "pgwFqdn": "string", "smfInstanceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" }, "additionalProp2": { "pgwFqdn": "string", "smfInstanceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" }, "additionalProp3": { "pgwFqdn": "string", "smfInstanceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" } } } }
         headers = { "Content-Type" : "application/json"}
         access3gppInfojson = json.dumps(access3gppInfo)

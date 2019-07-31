@@ -5,7 +5,7 @@ from flask import request, g
 import requests
 import json
 from flask_restful import Resource,reqparse
-
+from simconf import conf_json
 #from sqlalchemy import Column, String, create_engine,LargeBinary
 #from sqlalchemy.orm import sessionmaker
 #from sqlalchemy.ext.declarative import declarative_base
@@ -28,7 +28,7 @@ class UEAUTH(Resource):
         args = parser.parse_args()
         print(CurrentPath+":29   [UDM][INFO]   "+"receive AUSF get mysql infos with imsi("+str(supiOrSuci)+")")
         print(CurrentPath+":30   [UDM][INFO]   "+"create engine to connect mysql")
-        url = "http://127.0.0.1:8080/subscription-data/"+str(supiOrSuci)+"/authentication-data/authentication-subscription"
+        url = "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/"+str(supiOrSuci)+"/authentication-data/authentication-subscription"
         req = requests.get(url)
         if req.status_code == 200:
             authinfo_dict = req.json()

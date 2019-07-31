@@ -27,7 +27,7 @@ import socket,struct
 
 def quit(signum,frame):
 	print(CurrentPath+":29   [UE][INFO]   "+"ue begin deregisteration req")
-	UEInitialDeregistrationReq = "http://127.0.0.1:5555/uederegister"
+	UEInitialDeregistrationReq = "http://"+sys.argv[5]+":5555/uederegister"
 	r = requests.post(UEInitialDeregistrationReq)
 	if r.status_code == 200:
 		sys.exit()

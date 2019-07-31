@@ -6,6 +6,7 @@ import requests
 import json
 from flask_restful import Resource,reqparse
 
+
 from sqlalchemy import Column, String, create_engine,LargeBinary
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -28,7 +29,7 @@ from threading import Thread
 def SMFDoPCFPolicyAssociation(args):
 	print(CurrentPath+":27   [SMF][INFO]   "+"PCF selection ...")
 	print(CurrentPath+":31   [SMF][INFO]   "+"SMF SEND PCF POLICY ASSOCIATION ESTABILISHMENT TO PCF")
-	print(CurrentPath+":32   [SMF][INFO]   "+"post http://127.0.0.1:8080/npcf-smpolicycontrol/v1/sm-policies")
+	print(CurrentPath+":32   [SMF][INFO]   "+"post http://127.0.0.1:8081/npcf-smpolicycontrol/v1/sm-policies")
 	PolicyAssociationReqUri = "http://127.0.0.1:8081/npcf-smpolicycontrol/v1/sm-policies"
 	print(args)
 	SMPolicyContextData = {"accNetChId":{"accNetChaIdValue":0,"refPccRuleIds":["string"],"sessionChScope":True},"chargEntityAddr":{"anChargIpv4Addr":"198.51.100.1","anChargIpv6Addr":"2001:db8:85a3::8a2e:370:7334"},"gpsi":"string","supi":args['supi'],"interGrpIds":["a7483748-123-244-35"],"pduSessionId": int(args['pduSessionId']),"pduSessionType":"IPV4","chargingcharacteristics":"string","dnn":"string","notificationUri":"string","accessType":"3GPP_ACCESS","servingNetwork":{"mnc":"234","mcc":"244"},"userLocationInfo":{"eutraLocation":{"tai":{"plmnId":{"mcc":"234","mnc":"244"},"tac":"A198"},"ecgi":{"plmnId":{"mcc":"234","mnc":"244"},"eutraCellId":"8198677"},"ageOfLocationInformation":0,"ueLocationTimestamp":"2019-07-23T17:03:30.925Z","geographicalInformation":"458A884888488456","geodeticInformation":"458A8848884884566789","globalNgenbId":{"plmnId":{"mcc":"234","mnc":"244"},"ngeNbId":"MacroNGeNB-Ab123"}},"nrLocation":{"tai":{"plmnId":{"mcc":"234","mnc":"244"},"tac":"A198"},"ncgi":{"plmnId":{"mcc":"234","mnc":"244"},"nrCellId":"458A88488"},"ageOfLocationInformation":0,"ueLocationTimestamp":"2019-07-23T17:03:30.925Z","geographicalInformation":"458A884888488456","geodeticInformation":"458A8848884884566789","globalGnbId":{"plmnId":{"mcc":"234","mnc":"244"},"ngeNbId":"MacroNGeNB-Ab123"}},"n3gaLocation":{"n3gppTai":{"plmnId":{"mcc":"234","mnc":"244"},"tac":"A198"},"n3IwfId":"888F85","ueIpv4Addr":"127.0.0.1","ueIpv6Addr":"2001:db8:85a3::8a2e:370:7334","portNumber": 5555}},"ueTimeZone":"string","pei":"string","ipv4Address":"198.51.100.1","ipv6AddressPrefix":"2001:db8:abcd:12::0/64","ipDomain":"string","subsSessAmbr":{"uplink":"06877259326617319404306103 Mbps","downlink":"06877259326617319404306103 Mbps"},"subsDefQos":{"5qi":0,"arp":{"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE","priorityLevel":1},"priorityLevel":1},"numOfPackFilter":0,"online":True,"offline":True,"3gppPsDataOffStatus":True,"refQosIndication":True,"traceReq":{"traceRef":"773182-56B6DF","traceDepth":"MEDIUM","neTypeList":"dbeDB987cfE5B1ad8f","eventList":"F90","collectionEntityIpv4Addr":"198.51.100.1","collectionEntityIpv6Addr":"2001:db8:85a3::8a2e:370:7334","interfaceList":"F90"},"sliceInfo":{"sst":0,"sd":"38fB1b"},"servNfId":{"servNfInstId":"3fa85f64-5717-4562-b3fc-2c963f66afa6","guami":{"plmnId":{"mcc":"234","mnc":"244"},"amfId":"EF7d5D"},"anGwAddr":{"anGwIpv4Addr":"198.51.100.1","anGwIpv6Addr":"2001:db8:85a3::8a2e:370:7334"}},"suppFeat":"bECfA4","smfId":"3fa85f64-5717-4562-b3fc-2c963f66afa7","recoveryTime":"2019-07-23T17:03:30.926Z"}
