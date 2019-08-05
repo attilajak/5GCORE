@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 import operator
-from flask import request, g
+from flask import Flask,request, g
 import requests
 #from . import Resource
 #from .. import schemas
 from flask_restful import Resource,reqparse
+import json
 
-
+headers = { "Content-Type" : "application/json"}
 parser = reqparse.RequestParser()
-parser.add_argument('imsi')
-parser.add_argument('eNBID')
-parser.add_argument('msisdn')
-parser.add_argument('key')
-parser.add_argument('opc')
+parser.add_argument('DNN')
+parser.add_argument('PduSessionId')
+parser.add_argument('snssai')
+parser.add_argument('sst')
+parser.add_argument('sd')
 parser.add_argument('ueIP')
 parser.add_argument('ueListenPort')
 
-MCC_VALID = "208"
-MNC_VALID = "93"
+MCC_VALID = "262"
+MNC_VALID = "00"
 TAC_VALID = "1"
 
 CurrentPath = "~/5GCORE/eNB/v1/api/UERegisterRequest.py"
@@ -50,15 +51,19 @@ class ESTABLISHPDU(Resource):
 		print(CurrentPath+":55   "+"[UE][INFO]   "+"http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
 		IdentityRsp = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
 		RspMsg = {"PEI":"2769169126891","MsgType":"IdentityRsp"}
-		r4 = requests.post(IdentityRsp,data=RspMsg)
+		RspMsgjson = json.dumps(RspMsg)
+		r4 = requests.post(IdentityRsp,data=RspMsgjson,headers=headers)
 		if r4.status_code == 200:
 			print(CurrentPath+":60   [UE][INFO]   "+"IdentityRspSuccess")
 			print(CurrentPath+":61   [UE][INFO]   "+"Be Ready to initial PDU SESSION ESTABILISHMENT REQUEST")
 			print(CurrentPath+":62   "+"[UE][INFO]   "+"call AMF amfeNBInterface operation with MsgType(PDUSessionEstabilishReq) and http method(post)")
 			print(CurrentPath+":63   "+"[UE][INFO]   "+"http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
+			reqjson = request.get_json(force=True)
+			print(reqjson)
 			PDUSessionEstabilishReq = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
-			NASMsg = {"imsi":args['imsi'],"PDUSessionID":"10","RequestType":"InitialRequest","PDUType":"IPv4v6","MsgType":"PDUSessionEstabilishReq","CreateDataConnection":"TRUE"}
-			r5 = requests.post(PDUSessionEstabilishReq,data=NASMsg)
+			NASMsg = {"DNN":reqjson['DNN'],"PduSessionId":reqjson['PduSessionId'],"snssai": reqjson['snssai'],"RequestType":"InitialRequest","PDUType":"IPv4v6","MsgType":"PDUSessionEstabilishReq","CreateDataConnection":"TRUE"}
+			NASMsgjson = json.dumps(NASMsg)
+			r5 = requests.post(PDUSessionEstabilishReq,data=NASMsgjson,headers=headers)
 			ret = b'"PDUSessionEstablishmentAccept"\n'
 			if ret == r5.content :
 				print((r5.content).decode())

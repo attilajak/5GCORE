@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 import operator
-from flask import request, g
+from flask import Flask,request, g
 import requests
 import json
 from simconf import conf_json
@@ -19,7 +19,9 @@ class AMDATA(Resource):
         self.info = 0;
 
     def get(self,supi):
-        UdrGetAmDataUri =  "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/365464/123456/provisioned-data/am-data"
+        servingPlmnId = request.args.get("plmn-id")
+        ueId = "imsi-"+supi
+        UdrGetAmDataUri =  "http://"+conf_json['udr_sub_ip_address']+":"+conf_json['udr_sub_port_number']+"/subscription-data/"+ueId+"/"+servingPlmnId+"/provisioned-data/am-data"
         r = requests.get(UdrGetAmDataUri)
         if r.status_code == 200:
             UdrAmData = r.json()

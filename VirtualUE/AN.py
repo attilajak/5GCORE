@@ -16,7 +16,9 @@ from flask_restful import Resource,reqparse
 from v1 import variables
 import subprocess
 import socket,struct
+import json
 
+headers = { "Content-Type" : "application/json"}
 #def get_ip_address(ifname):
 #	s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 #	return socket.inet_ntoa(fcntl.ioctl(
@@ -35,7 +37,7 @@ def quit(signum,frame):
 	#p.wait()
 	UEInitialDeregistrationReq = "http://"+sys.argv[5]+":5001/namf-comm/v1/amfeNBInterface"
 	#UEInitialDeregistrationReq = "http://172.20.10.9:5001/namf-comm/v1/amfeNBInterface"
-	MsgLoad = {"imsi":variables.imsi,"CNTunnelID":variables.CNTunnelID,"MsgType":"UEInitialDeregistrationReq","DeregistrationType":"SwitchOff","AccessType":"3GPP"}
+	MsgLoad = {"suci":variables.suci,"CNTunnelID":variables.CNTunnelID,"MsgType":"UEInitialDeregistrationReq","DeregistrationType":"SwitchOff","AccessType":"3GPP"}
 	r = requests.post(UEInitialDeregistrationReq,data=MsgLoad)
 	ret = b'"DeregistrationAccept"\n'
 	if ret == r.content :
@@ -106,9 +108,10 @@ def RegisterReq():
 	global enp0s3Ip
 	global registration_status
 	global pdu_session_status
-	Msg = {"MsgType":"UERegisterReq","imsi":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
+	Msg = {"MsgType":"UERegisterReq","suci":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
 	UERegisterReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/ueregisterrequest"
-	r = requests.post(UERegisterReqUri, data=Msg)
+	Msgjson = json.dumps(Msg)
+	r = requests.post(UERegisterReqUri, data=Msgjson,headers=headers)
 	ret = b'"UERegister2AMFSuccess"\n'
 	if ret == r.content :
 		registration_status = 1
@@ -125,9 +128,10 @@ def DeRegisterReq():
 	global deregistration_status
 	global registration_status
 	global pdu_session_status
-	Msg = {"MsgType":"UEDeRegisterReq","imsi":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3],"CNTunnelID":variables.CNTunnelID}
+	Msg = {"MsgType":"UEDeRegisterReq","suci":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3],"CNTunnelID":variables.CNTunnelID}
 	UEDeRegisterReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/uederegisterrequest"
-	r = requests.post(UEDeRegisterReqUri, data=Msg)
+	Msgjson = json.dumps(Msg)
+	r = requests.post(UEDeRegisterReqUri, data=Msgjson,headers=headers)
 	ret = b'"DeregistrationAccept"\n'
 	if ret == r.content :
 		deregistration_status = 1
@@ -145,9 +149,10 @@ def EstPduReq():
 	global enp0s3Ip
 	global pdu_session_status
 	global registration_status
-	Msg = {"MsgType":"EstPduReq","imsi":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
+	Msg = {"MsgType":"Initial request","DNN":"www","PduSessionId":10,"snssai": { "sst": 55, "sd": "38fB1b" },"ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
 	PDUSessionReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/establishpdusession"
-	r = requests.post(PDUSessionReqUri, data=Msg)
+	Msgjson = json.dumps(Msg)
+	r = requests.post(PDUSessionReqUri, data=Msgjson,headers=headers)
 	ret = b'"PDUSessionEstablishmentAccept"\n'
 	if ret == r.content :
 		pdu_session_status = 1

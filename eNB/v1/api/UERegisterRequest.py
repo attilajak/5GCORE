@@ -9,7 +9,7 @@ from flask_restful import Resource,reqparse
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('imsi')
+parser.add_argument('suci')
 parser.add_argument('eNBID')
 parser.add_argument('msisdn')
 parser.add_argument('key')
@@ -17,9 +17,9 @@ parser.add_argument('opc')
 parser.add_argument('ueIP')
 parser.add_argument('ueListenPort')
 
-MCC_VALID = "208"
-MNC_VALID = "93"
-TAC_VALID = "1"
+MCC_VALID = "262"
+MNC_VALID = "00"
+TAC_VALID = "A198"
 
 CurrentPath = "~/5GCORE/eNB/v1/api/UERegisterRequest.py"
 
@@ -52,7 +52,7 @@ class UEREGISTERREQ(Resource):
 		print(CurrentPath+":27   "+"[eNB][INFO]   "+"call AMF amfeNBInterface operation with MsgType(eNBConnect2AMF) and http method(post)")
 		print(CurrentPath+":28   "+"[eNB][INFO]   "+"post http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
 		ConnecteNB2AMF = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
-		eNBInfo = {"ID":args['eNBID'],"MCC":"208","MNC":"93","TAC":"01","MsgType":"eNBConnect2AMF"}
+		eNBInfo = {"ID":args['eNBID'],"MCC":MCC_VALID,"MNC":MNC_VALID,"TAC":TAC_VALID,"MsgType":"eNBConnect2AMF"}
 		r1 = requests.post(ConnecteNB2AMF, data=eNBInfo)
 		ret = b'"eNBConnect2AMFSuccess"\n'
 		if ret == r1.content :
@@ -70,7 +70,7 @@ class UEREGISTERREQ(Resource):
 				print(CurrentPath+":45   "+"[UE][INFO]   "+"call AMF amfeNBInterface operation with MsgType(UERegisterRequest) and http method(post)")
 				print(CurrentPath+":46   "+"[UE][INFO]   "+"http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
 				UERegisterRequestUri = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
-				UEInfo = {"imsi":args['imsi'],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","MsgType":"UERegisterRequest","ueListenPort":args['ueIP']+":"+args['ueListenPort']}
+				UEInfo = {"suci":args['suci'],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","MsgType":"UERegisterRequest","ueListenPort":args['ueIP']+":"+args['ueListenPort']}
 				r3 = requests.post(UERegisterRequestUri,data=UEInfo)
 				ret = b'"UERegister2AMFSuccess"\n'
 				if ret == r3.content :
@@ -80,7 +80,7 @@ class UEREGISTERREQ(Resource):
 					print(CurrentPath+":54   "+"[UE][INFO]   "+"call AMF amfeNBInterface operation with MsgType(IdentityRsp) and http method(post)")
 					print(CurrentPath+":55   "+"[UE][INFO]   "+"http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
 					IdentityRsp = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
-					RspMsg = {"PEI":"2769169126891","MsgType":"IdentityRsp"}
+					RspMsg = {"PEI":"imei-089322137616763","MsgType":"IdentityRsp"}
 					r4 = requests.post(IdentityRsp,data=RspMsg)
 					if r4.status_code == 200:
 						print(CurrentPath+":60   [UE][INFO]   "+"IdentityRspSuccess")
@@ -88,7 +88,7 @@ class UEREGISTERREQ(Resource):
 						print(CurrentPath+":62   "+"[UE][INFO]   "+"call AMF amfeNBInterface operation with MsgType(PDUSessionEstabilishReq) and http method(post)")
 						print(CurrentPath+":63   "+"[UE][INFO]   "+"http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface")
 						PDUSessionEstabilishReq = "http://127.0.0.1:5001/namf-comm/v1/amfeNBInterface"
-						NASMsg = {"imsi":args['imsi'],"PDUSessionID":"10","RequestType":"InitialRequest","PDUType":"IPv4v6","MsgType":"PDUSessionEstabilishReq","CreateDataConnection":"TRUE"}
+						NASMsg = {"suci":args['suci'],"PDUSessionID":"10","RequestType":"InitialRequest","PDUType":"IPv4v6","MsgType":"PDUSessionEstabilishReq","CreateDataConnection":"TRUE"}
 						r5 = requests.post(PDUSessionEstabilishReq,data=NASMsg)
 						ret = b'"PDUSessionEstablishmentAccept"\n'
 						if ret == r5.content :

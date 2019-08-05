@@ -9,13 +9,13 @@ from flask_restful import Resource,reqparse
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('imsi')
+parser.add_argument('suci')
 parser.add_argument('tmsi')
 parser.add_argument('key')
 parser.add_argument('opc')
 parser.add_argument('operation')
-MCC_VALID = "208"
-MNC_VALID = "93"
+MCC_VALID = "262"
+MNC_VALID = "00"
 TAC_VALID = "1"
 
 info = "                                                                                         "+"|--------------------------------------------------------------|\n"\
@@ -66,7 +66,7 @@ class LIUE(Resource):
         #    return "BAD TAC"
         #self.info += "                                                                                         "+("    "+ID+"    "+"       "+MCC+"      "+"      "+MNC+"        "+"        "+TAC+"      "+"\n")\
         #             +"                                                                                         "+"|--------------|---------------|---------------|---------------|\n"
-        #info = self.info 
+        #info = self.info
         #display(self.info)
 
     def delete(self):
@@ -78,6 +78,3 @@ class LIUE(Resource):
         #else:
         	#print("no eNB has been connected")
     	return "delete_eNB_rsp"
-        
-        
-        

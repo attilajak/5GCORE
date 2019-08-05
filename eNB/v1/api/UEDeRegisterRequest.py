@@ -9,7 +9,7 @@ from flask_restful import Resource,reqparse
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('imsi')
+parser.add_argument('suci')
 parser.add_argument('eNBID')
 parser.add_argument('msisdn')
 parser.add_argument('key')
@@ -18,8 +18,8 @@ parser.add_argument('ueIP')
 parser.add_argument('ueListenPort')
 parser.add_argument('CNTunnelID')
 
-MCC_VALID = "208"
-MNC_VALID = "93"
+MCC_VALID = "262"
+MNC_VALID = "00"
 TAC_VALID = "1"
 
 CurrentPath = "~/5GCORE/eNB/v1/api/UEDeRegisterRequest.py"
@@ -47,7 +47,7 @@ class UEDEREGISTERREQ(Resource):
 	def post(self):
 		args = parser.parse_args()
 		UEInitialDeregistrationReq = "http://"+args['ueIP']+":5001/namf-comm/v1/amfeNBInterface"
-		MsgLoad = {"imsi":args['imsi'],"CNTunnelID":args['CNTunnelID'],"MsgType":"UEInitialDeregistrationReq","DeregistrationType":"SwitchOff","AccessType":"3GPP"}
+		MsgLoad = {"suci":args['suci'],"CNTunnelID":args['CNTunnelID'],"MsgType":"UEInitialDeregistrationReq","DeregistrationType":"SwitchOff","AccessType":"3GPP"}
 		r = requests.post(UEInitialDeregistrationReq,data=MsgLoad)
 		ret = b'"DeregistrationAccept"\n'
 		if ret == r.content :

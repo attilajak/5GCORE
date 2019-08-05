@@ -8,6 +8,7 @@ from flask import request, g
 import ldap
 import base64
 from simconf import conf_json,get_ip
+from hyper import HTTP20Connection
 
 ########LDAP Configuration###############
 ldap_server = 'ldap://localhost:389'
@@ -113,20 +114,29 @@ def sm_policies_post(body):  # noqa: E501
     except ldap.LDAPError, e:
         print(e)
         result = ldapc.add_s(final_dn,add_record)
-        ldaps.unbind()
+        ldapc.unbind()
         print(result)
 
     #import pdb; pdb.set_trace()
-    RequestUri = "http://"+conf_json['udr_policy_ip_address']+":"+conf_json['udr_policy_port_number']+"/policy-data/ues/"+body.supi+"/sm-data"
-    r = requests.get(RequestUri)
-    if r.status_code == 200:
-        querydata = r.json() # do I need this data for subscribing?
+    #RequestUri = "http://"+conf_json['udr_policy_ip_address']+":"+conf_json['udr_policy_port_number']+"/policy-data/ues/"+body.supi+"/sm-data"
+    RequestUri = "http://"+conf_json['udr_policy_ip_address']+":"+conf_json['udr_policy_port_number']+"/nudr-dr/v1/policy-data/ues/uid-"+body.supi+"/sm-data"
+    #r = requests.get(RequestUri)
+    udrcon = HTTP20Connection(conf_json['udr_policy_ip_address']+":"+"7003")
+    streamid = udrcon.request('GET', "/nudr-dr/v1/policy-data/ues/uid-"+body.supi+"/sm-data")
+    print("streamid: "+str(streamid))
+    resp = udrcon.get_response()
+    #if r.status_code == 200:
+    if resp.status == 200:
+        #querydata = r.json() # do I need this data for subscribing?
+        print(resp.read())
         SubscribeData = {"notificationUri":"http://"+get_ip()+":8081/npcf-smpolicycontrol/v1/sm-policies/notify","monitoredResourceUris":["http://"+conf_json['udr_policy_ip_address']+":"+conf_json['udr_policy_port_number']+"/policy-data/ues/"+body.supi+"/sm-data"]}
         UdrSubscribeUri = "http://"+conf_json['udr_policy_ip_address']+":"+conf_json['udr_policy_port_number']+"/policy-data/subs-to-notify"
         SubscribeDatajson = json.dumps(SubscribeData)
         r1 = requests.post(UdrSubscribeUri,data=SubscribeDatajson,headers=headers)
         if r1.status_code == 201:
             print("Subscription to Policy Control Subscription Successful")
+    else:
+        print("[PCF][ERROR]: GET "+"/nudr-dr/v1/policy-data/ues/uid-"+body.supi+"/sm-data"+"Failed")
     return response,201,{'Location': 'http://'+get_ip()+':8081/npcf-smpolicycontrol/v1/sm-policies/'+uidvalue}
 
 

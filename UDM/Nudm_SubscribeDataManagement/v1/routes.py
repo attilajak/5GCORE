@@ -13,7 +13,7 @@ from .api.SdmSubscribe import SDMSUBSCRIBE
 
 
 routes = [
-    dict(resource=AMDATA, urls=['/<int:supi>/am-data'], endpoint='AmData'),
-    dict(resource=SDMSUBSCRIBE, urls=['/<int:supi>/sdm-subscriptions'], endpoint='SdmSubscribe'),
+    dict(resource=AMDATA, urls=['/<string:supi>/am-data'], endpoint='AmData'),
+    dict(resource=SDMSUBSCRIBE, urls=['/<string:supi>/sdm-subscriptions'], endpoint='SdmSubscribe'),
 
 ]

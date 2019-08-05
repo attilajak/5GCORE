@@ -15,7 +15,7 @@ from .api.Authenticate5g import AUTH5G
 
 routes = [
     dict(resource=AUTH, urls=['/ue-authentications'], endpoint='Authenticate'),
-    dict(resource=AUTH5G, urls=['/ue-authentications/<int:ueContextId>/5g-aka-confirmation'], endpoint='Authenticate5g'),
+    dict(resource=AUTH5G, urls=['/ue-authentications/<string:ueContextId>/5g-aka-confirmation'], endpoint='Authenticate5g'),
 
 
 ]
