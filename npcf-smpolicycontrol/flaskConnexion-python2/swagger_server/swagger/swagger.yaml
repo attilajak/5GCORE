@@ -1611,7 +1611,7 @@ components:
             chgId: chgId
             reportingLevel: ""
     SmPolicyNotification:
-      type: object
+      type: array
       properties:
         resourceUri:
           $ref: '#/components/schemas/Uri'

@@ -17,6 +17,18 @@ from v1 import variables
 import subprocess
 import socket,struct
 import json
+import ldap
+import ldap.modlist as modlist
+
+########LDAP Configuration###############
+ldap_server = 'ldap://localhost:16611'
+auth_dn = 'cn=Manager,dc=maxcrc,dc=com'
+search_dn = 'uid=2620020000092,ds=SUBSCRIBER,o=DEFAULT,dc=C-NTDB'
+base_dn = 'ou=Sessions,dc=maxcrc,dc=com'
+filter = '(objectClass=uidObject)'
+user = 'cn=pgwAdminUser'
+pw = 'azMVsxp9=fLQ2NyqE#A!'
+########LDAP Configuration###############
 
 headers = { "Content-Type" : "application/json"}
 #def get_ip_address(ifname):
@@ -70,6 +82,16 @@ CurrentPath = "~/5GCORE/UE/AN.py"
 registration_status = 0
 deregistration_status = 0
 pdu_session_status = 0
+notification_status = 0
+pcfblob_status = 0
+
+
+ue = 0
+pdu = 0
+pcf = 0
+noti = 0
+
+
 #def ReqFromAMF():
 #	create_app().run(port=5555)
 
@@ -101,26 +123,36 @@ app = Flask(__name__)
 def index():
 	global pdu_session_status
 	global registration_status
-	return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
+	return render_template('5Gsimulator.html',regsuccess=registration_status,pdusuccess=pdu_session_status)
 
 @app.route('/ueregister',methods=['POST'])
 def RegisterReq():
-	global enp0s3Ip
-	global registration_status
-	global pdu_session_status
-	Msg = {"MsgType":"UERegisterReq","suci":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
-	UERegisterReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/ueregisterrequest"
-	Msgjson = json.dumps(Msg)
-	r = requests.post(UERegisterReqUri, data=Msgjson,headers=headers)
-	ret = b'"UERegister2AMFSuccess"\n'
-	if ret == r.content :
-		registration_status = 1
-		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
-	else :
-		registration_status = 2
-		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
+    global enp0s3Ip
+    global registration_status
+    global pdu_session_status
+    global pcf_session_blob
+    global nnotification_status
+    global ue
+    global pdu
+    global pcf
+    global noti
+
+    Msg = {"MsgType":"UERegisterReq","suci":sys.argv[2],"eNBID":sys.argv[1],"msisdn":"32435235366","key":"8baf473f2f8fd09487cccbd7097c6862","opc":"e734f8734007d6c5ce7a0508809e7e9c","ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
+    UERegisterReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/ueregisterrequest"
+    Msgjson = json.dumps(Msg)
+    r = requests.post(UERegisterReqUri, data=Msgjson,headers=headers)
+    ret = b'"UERegister2AMFSuccess"\n'
+    an_ue = 1
+    if ret == r.content :
+        registration_status = 1
+        ue = 1
+        print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
+        return render_template('5Gsimulator.html',regsuccess=registration_status, ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+    else :
+        ue = 2
+        registration_status = 2
+        print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
+        return render_template('5Gsimulator.html',regsuccess=registration_status, ue=ue, pdu=pdu, pcf=pcf, noti=noti)
 
 @app.route('/uederegister',methods=['POST'])
 def DeRegisterReq():
@@ -138,30 +170,125 @@ def DeRegisterReq():
 		registration_status = 0
 		pdu_session_status = 0
 		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
+		return render_template('5Gsimulator.html',regsuccess=registration_status,pdusuccess=pdu_session_status, notificationsuccess=notification_status ,pcfblobsuccess=pcfblob_status )
 	else :
 		deregistration_status = 2
 		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
+		return render_template('5Gsimulator.html',regsuccess=registration_status,pdusuccess=pdu_session_status, notificationsuccess=notification_status ,pcfblobsuccess=pcfblob_status )
 
 @app.route('/establishpdu',methods=['POST'])
 def EstPduReq():
-	global enp0s3Ip
-	global pdu_session_status
-	global registration_status
-	Msg = {"MsgType":"Initial request","DNN":"www","PduSessionId":10,"snssai": { "sst": 55, "sd": "38fB1b" },"ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
-	PDUSessionReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/establishpdusession"
-	Msgjson = json.dumps(Msg)
-	r = requests.post(PDUSessionReqUri, data=Msgjson,headers=headers)
-	ret = b'"PDUSessionEstablishmentAccept"\n'
-	if ret == r.content :
-		pdu_session_status = 1
-		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
-	else :
-		pdu_session_status = 2
-		print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
-		return render_template('basic.html',regsuccess=registration_status,pdusuccess=pdu_session_status,deregsuccess=deregistration_status)
+    global enp0s3Ip
+    global pdu_session_status
+    global pcfblob_status
+    global notification_status
+    global registration_status
+    global ue
+    global pdu
+    global pcf
+    global noti
+
+    Msg = {"MsgType":"Initial request","DNN":"www","PduSessionId":10,"snssai": { "sst": 55, "sd": "38fB1b" },"ueIP":enp0s3Ip,"ueListenPort":sys.argv[3]}
+    PDUSessionReqUri = "http://"+sys.argv[5]+":5000/Nenb-transfer/v1/establishpdusession"
+    Msgjson = json.dumps(Msg)
+    r = requests.post(PDUSessionReqUri, data=Msgjson,headers=headers)
+    ret = b'"PDUSessionEstablishmentAccept"\n'
+    if ret == r.content :
+        pdu_session_status = 1
+        pdu = 1
+        print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
+        return render_template('5Gsimulator.html',pdusuccess=pdu_session_status , ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+    else :
+        pdu = 2
+        pdu_session_status = 2
+        print(CurrentPath+":52   [UE][INFO]   "+(r.content).decode())
+        return render_template('5Gsimulator.html' ,pdusuccess=pdu_session_status , ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+
+
+
+@app.route('/notification', methods=['POST'])
+def NotificationReq():
+    global enp0s3Ip
+    global notification_status
+    global pdu_session_status
+    global registration_status
+    global pcfblob_status
+    global ue
+    global pdu
+    global pcf
+    global noti
+
+    ldapc = ldap.initialize(ldap_server)
+    result = ldapc.simple_bind_s(user,pw)
+    print("bind success")
+    print(result)
+
+    old = {}
+    old["subscCats"] = ["VIP"]
+    new = {}
+    new["subscCats"]=["Gold"]
+
+    #attrs = {}
+    #attrs['subscCats'] = ['VIP']
+
+    ldif = modlist.modifyModlist(old,new)
+
+    dn="dnn=internet1.mnc02.mcc262.ngc,snssai=4-1A2B3C,o=sm-policy-data,ds=uePolicyData,subdata=services,uid=2620020000092,ds=SUBSCRIBER,o=DEFAULT,dc=C-NTDB"
+
+    print("LDIF:")
+    print(ldif)
+    
+    ldapc.modify_s(dn,ldif)
+	
+    print("In notificationReq")
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
+    #code
+    checking_var = 1
+
+    #if Success
+    if checking_var == 1 :
+        #code
+        notification_status = 1
+        noti = 1
+        return render_template('5Gsimulator.html',notificationsuccess=notification_status ,ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+    #Else
+    else :
+        #code
+        notification_status = 2
+        noti = 2
+        return render_template('5Gsimulator.html', notificationsuccess=notification_status ,ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+
+@app.route('/pcf_session', methods=['POST'])
+def pcf_session_blob():
+    global enp0s3Ip
+    global notification_status
+    global registration_status
+    global pdu_session_status
+    global pcfblob_status
+    global ue
+    global pdu
+    global pcf
+    global noti
+
+    data={'262002000009210'}
+    sessBlobReqUri = "http://"+sys.argv[5]+":8081/npcf-smpolicycontrol/v1/sm-policies/sm-policy-id"
+    r = requests.get(sessBlobReqUri,"262002000009210")
+    ret = b'"sessionBlobDataReceived"\n'
+
+    #if Success
+    if ret == r.content :
+        #code
+        pcf = 1
+        pcfblob_status = 1
+        return render_template('5Gsimulator.html',pcfblobsuccess=pcfblob_status, ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+    #else
+    else :
+        #CODE
+        pcfblob_status = 2
+        pcf = 2
+        return render_template('5Gsimulator.html',pcfblobsuccess=pcfblob_status, ue=ue, pdu=pdu, pcf=pcf, noti=noti)
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',port=int(sys.argv[4]))

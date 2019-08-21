@@ -22,7 +22,21 @@
 		<form action="/uederegister" method="post">
     <button id="dereg" name="DeregBtn" type="submit">UE DeRegister Request</button>
 		</form>
-			<!--<p id="pdusession"></p>-->
+		<p></p>
+		<p></p>
+		<p></p>
+		<!--<p id="uederegister"></p>-->
+		<form action="/sessionblobdata" method="post">
+    <button id="sessblob" name="SessBlobBtn" type="submit">Session Blob</button>
+		</form>
+		<p></p>
+		<p></p>
+		<p></p>
+			<!--<p id="sessionBlob"></p>-->
+	     <form action="/notification" method="post">
+    <button id="notificationstart" name="notificationStartBtn" type="submit">Notification</button>
+	     </form>
+			<!--<p id="sessionBlob"></p>-->
 		{% if regsuccess == 0 %}
 			<!--<script> document.getElementById("register").innerHTML = "UE Not Registered"; </script>
 			<script> document.getElementById("register").style.color = "black"; </script>-->
@@ -65,6 +79,36 @@
 			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Establishment Failed"; </script>
 			<script> document.getElementById("pdusession").style.color = "red"; </script>-->
 			<script> document.getElementById("pdustart").style = "background-color:red";</script>
+		{% endif %}
+		{% if sessblobsuccess == 0 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Not Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "black"; </script>-->
+			<script> document.getElementById("sessblob").style = "background-color:yellow";</script>
+		{% endif %}
+		{% if sessblobsuccess == 1 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "green"; </script>-->
+			<script> document.getElementById("sessblob").style = "background-color:green";</script>
+		{% endif %}
+		{% if sessblobsuccess == 2 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Establishment Failed"; </script>
+			<script> document.getElementById("pdusession").style.color = "red"; </script>-->
+			<script> document.getElementById("sessblob").style = "background-color:red";</script>
+		{% endif %}
+		{% if notificationsuccess == 0 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Not Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "black"; </script>-->
+			<script> document.getElementById("notificationstart").style = "background-color:yellow";</script>
+		{% endif %}
+		{% if notificationsuccess == 1 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Established"; </script>
+			<script> document.getElementById("pdusession").style.color = "green"; </script>-->
+			<script> document.getElementById("notificationstart").style = "background-color:green";</script>
+		{% endif %}
+		{% if notificationsuccess == 2 %}
+			<!--<script> document.getElementById("pdusession").innerHTML = "PDU Session Establishment Failed"; </script>
+			<script> document.getElementById("pdusession").style.color = "red"; </script>-->
+			<script> document.getElementById("notificationstart").style = "background-color:red";</script>
 		{% endif %}
 
     </body>
