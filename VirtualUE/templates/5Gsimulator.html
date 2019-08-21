@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+
+<head>
+    <style>
+        body
+{
+    
+    overflow:hidden;
+    clear:both;
+}
+
+.wrapper {
+    display:grid;
+    min-height:590px;
+    position:relative;
+    grid-template-columns:80% 20%;
+
+}
+.label {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    /*grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;*/
+    grid-template: "1fr" "1fr 1fr 1fr 1fr " "1fr 1fr 1fr 1fr " "1fr 1fr 1fr 1fr ";
+    grid-gap: 1.2em 1.2em;
+}
+.button{
+    
+    display:grid;
+    justify-content:center;
+    grid-row-gap:1em;
+}
+
+        .button_table button {
+        cursor: pointer;
+        margin: 2vh 0;
+        width: 15vw;
+        height: 10vh;
+        padding: 20px 2px;
+        overflow: hidden;
+        word-wrap: break-word;
+        background-color: #aaa;
+        border-radius: 8px;
+        text-align: center;
+        letter-spacing: 0.1em;
+        color: black;
+    }
+
+    .button_table button:active {
+        background-color: #bbb;
+    }
+
+    #uereg {
+            padding: 1em;
+            align-self: center;
+            text-align: center;
+            border-color: #C0C0C0;
+            border-style: solid;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0;
+            font-size: 18px;
+            
+        }
+
+        #pdusession{
+            padding: 1em;
+            align-self: center;
+            text-align: center;
+            border-color: #C0C0C0;
+            border-style: solid;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0;
+            font-size: 18px;
+            
+        }
+
+        #sessionblob{
+            padding: 1em;
+            align-self: center;
+            text-align: center;
+            border-color: #C0C0C0;
+            border-style: solid;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0;
+            font-size: 18px;
+            
+        }
+
+        #notification{
+            padding: 1em;
+            align-self: center;
+            text-align: center;
+            border-color: #C0C0C0;
+            border-style: solid;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0;
+            font-size: 18px;
+            
+        }
+        
+
+
+#heading {
+    font-size:5em;
+}
+
+#logo {
+    height:7em;
+    width:7em;
+    position:fixed;
+    left:1370px;
+    top:20px;
+    border-radius:4em;
+}
+
+.sdl {
+    text-align: center;
+    align-self: center;
+    grid-column-start: 1;
+    grid-column-end: 5;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.ue {
+    grid-row-start: 2;
+    grid-row-end: 5;
+    align-self: center;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding-top: 5px;
+    border-radius: 15px;
+}
+.mme {
+    align-self: center;
+    text-align: center;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+.ausf {
+    align-self: center;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.upf {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    align-self: center;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.foreign {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    align-self: center;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.pcf {
+    align-self: center;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.epgd {
+    align-self: center;
+    text-align: center;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.af {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    align-self: center;
+    justify-self:start;
+    text-align: center;
+    background-color: rgba(18,65,145,1);
+    color: white;
+    font-size: 20px;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+
+/*for button 1*/
+
+        #icon-arrow-straight {
+            width: 150px;
+            height: 3px;
+            background-color: forestgreen;
+            border-radius: 6px;           
+            position:fixed;
+            top: 510px;
+            left: 240px;
+            visibility:hidden;
+            transform: rotate(0deg);
+        }
+
+            #icon-arrow-straight:after {
+                content: "";
+                display: inline-block;
+                width: 10px;
+                border-radius: 4px;
+                height: 3px;
+                background-color: forestgreen;
+                transform: rotate(45deg);
+                position: absolute;
+                right: -3px;
+                bottom: 3px;
+            }
+
+            #icon-arrow-straight:before {
+                content: "";
+                display: inline-block;
+                width: 10px;
+                border-radius: 4px;
+                height: 3px;
+                background-color: forestgreen;
+                transform: rotate(-45deg);
+                position: absolute;
+                right: -3px;
+                bottom: -3px;
+            }
+
+
+#icon-arrow-upwards {
+    width: 82px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 440px;
+    left: 430px;
+    visibility:hidden;
+    transform: rotate(-90deg);
+}
+
+    #icon-arrow-upwards:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-upwards:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-45above {
+    width: 120px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 285px;
+    left: 465px;
+    visibility:hidden;
+    transform: rotate(-45deg);
+}
+
+    #icon-arrow-45above:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-45above:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-45above1 {
+    width: 180px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 450px;
+    left: 550px;
+    visibility:hidden;
+    transform: rotate(-30deg);
+}
+
+    #icon-arrow-45above1:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-45above1:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+/*for button 2*/
+#icon-arrow-straight1 {
+    width: 150px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 515px;
+    left: 560px;
+    visibility:hidden;
+    transform: rotate(0deg);
+}
+
+    #icon-arrow-straight1:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-straight1:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-straight-upwards2 {
+    width:85px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 440px;
+    left: 740px;
+    visibility:hidden;
+    transform: rotate(-90deg);
+}
+
+    #icon-arrow-straight-upwards2:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-straight-upwards2:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-above-origin2 {
+    width: 125px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 285px;
+    left: 700px;
+    visibility:hidden;
+    transform: rotate(-135deg);
+}
+
+    #icon-arrow-above-origin2:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-above-origin2:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+#icon-arrow-above-origin-dd2 {
+    width: 120px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 275px;
+    left: 712px;
+    visibility:hidden;
+    transform: rotate(45deg);
+}
+
+    #icon-arrow-above-origin-dd2:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-above-origin-dd2:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-downwards2 {
+    width: 80px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 440px;
+    left: 760px;
+    visibility:hidden;
+    transform: rotate(90deg);
+}
+
+    #icon-arrow-downwards2:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-downwards2:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+#icon-arrow-downwards21 {
+    width: 80px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 590px;
+    left: 752px;
+    visibility:hidden;
+    transform: rotate(90deg);
+}
+
+    #icon-arrow-downwards21:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-downwards21:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+
+#icon-arrow-rightwards2 {
+    width: 80px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 665px;
+    left: 885px;
+    visibility:hidden;
+    transform: rotate(0deg);
+}
+
+    #icon-arrow-rightwards2:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-rightwards2:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+#icon-arrow-leftwards-last-1 {
+    width: 290px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 210px;
+    left: 730px;
+    visibility:hidden;
+    transform: rotate(-180deg);
+}
+
+    #icon-arrow-leftwards-last-1:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-leftwards-last-1:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+#icon-arrow-downwards-last-1 {
+    width: 420px;
+    height: 3px;
+    background-color: forestgreen;
+    border-radius: 6px;
+    position: fixed;
+    top: 420px;
+    left: 810px;
+    visibility: hidden;
+    transform: rotate(90deg);
+}
+
+    #icon-arrow-downwards-last-1:after {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(45deg);
+        position: absolute;
+        right: -3px;
+        bottom: 3px;
+    }
+
+    #icon-arrow-downwards-last-1:before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        border-radius: 4px;
+        height: 3px;
+        background-color: forestgreen;
+        transform: rotate(-45deg);
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
+
+    #selfloop1 {
+        font-size: 60px;
+        display: inline-block;
+        position: fixed;
+        color: forestgreen;
+        top: 450px;
+        left: 700px;
+        visibility: hidden;
+        transform: rotate(-40deg);
+    }
+
+    #selfloop2 {
+        font-size: 60px;
+        display: inline-block;
+        position: fixed;
+        color: forestgreen;
+        left: 620px;
+        visibility: hidden;
+        top: 140px;
+}
+
+    @keyframes fade_in{
+        from{
+            opacity:0;
+        }
+        to{
+            opacity:1;
+        }
+    }
+
+    @keyframes fade_out{
+        from{
+            opacity:1;
+        }
+        to{
+            opacity:0;
+        }
+    }
+
+    @keyframes green_fade_in{
+        from{
+            background-color:#C0C0C0;
+        }
+        to{
+            background-color:green;
+        }
+    }
+    #Tag1 {
+        color: black;
+        width: 150px;
+        margin: -650px 150px 150px 250px;
+        font-size: 14px;
+        visibility:hidden;
+        position:fixed;
+}
+
+    #Tag1r {
+        color: black;
+        transform: translate(320px,90px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+    #Tag2 {
+        color: black;
+        transform: translate(300px,250px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+        #Tag3 {
+            color: black;
+            text-align: center;
+            transform: translate(270px,345px);
+            font-size: 16px;
+            width: 70px;
+            border-radius: 8px;
+            border-style: dotted;
+            visibility:hidden;
+            position: fixed;
+        }
+
+    #Tag4 {
+        color: black;
+        transform: translate(320px,540px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag5 {
+        color: black;
+        transform: translate(560px,380px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag6 {
+        color: black;
+        transform: translate(570px,295px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag7 {
+        color: black;
+        transform: translate(643px,250px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag8 {
+        color: black;
+        transform: translate(620px,260px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag9 {
+        color: black;
+        transform: translate(610px,268px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag10 {
+        color: black;
+        transform: translate(830px,270px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag11 {
+        color: black;
+        transform: translate(830px,260px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag12 {
+        color: black;
+        transform: translate(805px,80px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag13 {
+        color: black;
+        transform: translate(800px,100px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag14 {
+        color: black;
+        transform: translate(790px,70px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag15 {
+        color: black;
+        transform: translate(770px,-20px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag16 {
+        color: black;
+        transform: translate(590px,110px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag17 {
+        color: black;
+        transform: translate(590px,120px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag18 {
+        color: black;
+        transform: translate(560px,220px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+    }
+
+    #Tag19 {
+        color: black;
+        transform: translate(1030px,50px);
+        font-size: 14px;
+        visibility: hidden;
+        position: fixed;
+        top:100px;
+    }
+
+    .number{
+        width: 20px;
+        line-height: 20px;
+        border-radius: 50%;
+        text-align: center;
+        background-color: #ff4000;
+        font-size: 13px;
+        border: 2px solid #666;
+        color: #ffffff;
+    }
+    /*registration*/
+    #regnum1 {
+        position: fixed;
+        top: 410px;
+        left: 440px;
+        visibility: hidden;
+    }
+
+    #regnum2 {
+        position: fixed;
+        top: 245px;
+        left: 490px;
+        visibility: hidden;
+    }
+
+    #regnum21 {
+        position: fixed;
+        top: 400px;
+        left: 630px;
+        visibility: hidden;
+    }
+
+    /*pdu*/
+
+    #pdunum1 {
+        position: fixed;
+        top: 507px;
+        left: 615px;
+        visibility: hidden;
+    }
+
+    #pdunum2 {
+        position: fixed;
+        top: 450px;
+        left: 675px;
+        visibility:hidden;
+    }
+
+    #pdunum3 {
+        position: fixed;
+        top: 410px;
+        left: 740px;
+        visibility:hidden;
+    }
+
+    #pdunum4 {
+        position: fixed;
+        top: 265px;
+        left: 720px;
+        visibility: hidden;
+    }
+
+    #pdunum5 {
+        position: fixed;
+        top: 245px;
+        left: 778px;
+        visibility: hidden;
+    }
+
+    #pdunum6 {
+        position: fixed;
+        top: 415px;
+        left: 807px;
+        visibility: hidden;
+    }
+
+    #pdunum7 {
+        position: fixed;
+        top: 563px;
+        left: 795px;
+        visibility: hidden;
+    }
+
+    #pdunum8 {
+        position: fixed;
+        top: 615px;
+        left: 910px;
+        visibility: hidden;
+    }
+
+
+    /*pcf*/
+    #pcfnum1 {
+        position: fixed;
+        top: 415px;
+        left: 745px;
+        visibility: hidden;
+    }
+
+    #pcfnum2 {
+        position: fixed;
+        top: 265px;
+        left: 720px;
+        visibility: hidden;
+    }
+
+    #pcfnum3 {
+        position: fixed;
+        left: 855px;
+        top: 160px;
+        visibility: hidden;
+    }
+
+
+    /*notification*/
+
+    #notnum1 {
+        top: 135px;
+        left: 685px;
+        position: fixed;
+        visibility: hidden;
+    }
+
+    #notnum2 {
+        visibility: hidden;
+        top: 235px;
+        left: 775px;
+        position: fixed;
+    }
+
+    #notnum3 {
+        visibility: hidden;
+        top: 415px;
+        left: 805px;
+        position: fixed;
+    }
+
+    #notnum4 {
+        visibility: hidden;
+        top: 563px;
+        left: 805px;
+        position: fixed;
+    }
+
+    #notnum5 {
+        position: fixed;
+        top: 615px;
+        left: 910px;
+        visibility: hidden;
+    }
+
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <img src="{{url_for('static', filename='NOKIA.png')}}" />
+        <img id="logo" src="{{url_for('static', filename='5g logo.jpg')}}" />
+    </header>
+
+    <section>
+        <center id="heading">Welcome to 5G Simulator</center>
+    </section>
+
+    <section>
+        <div class="wrapper">
+            <div class="label">
+                <div class="sdl">SDL<br />UDR</div>
+                <div class="ausf">AUSF/UDM<br />/HSS</div>
+                <div class="pcf">PCF/PCRF</div>
+                <div class="foreign">Foreign<br />MME/AMF</div>
+                <div class="af">AF</div>
+                <img style="position:fixed; top:680px; left:1095px" src="{{url_for('static', filename='cloud.png')}}" />
+
+                <div class="ue">UE</div>
+                <div class="mme">MME/AMF</div>
+                <div class="epgd">ePGD/SMF</div>
+
+                <div class="upf">UPF</div>
+
+                <div id="icon-arrow-straight"></div>
+                <div id="icon-arrow-upwards"></div>
+                <div id="icon-arrow-45above"></div>
+                <div id="icon-arrow-45above1"></div>
+                <div id="icon-arrow-straight1"></div>
+                <div id="icon-arrow-straight-upwards2"></div>
+                <div id="icon-arrow-above-origin2"></div>
+                <div id="icon-arrow-above-origin-dd2"></div>
+                <div id="icon-arrow-downwards2"></div>
+                <div id="icon-arrow-downwards21"></div>
+                <div id="icon-arrow-rightwards2"></div>
+                <div id="icon-arrow-leftwards-last-1"></div>
+                <div id="icon-arrow-downwards-last-1"></div>
+                <div id="selfloop1">&#8631</div>
+                <div id="selfloop2">&#8631</div>
+
+                <h5 id="Tag1">
+                    Registration procedure,<br>
+                    retrieve sub (UE) profile
+                </h5>
+
+                <h5 id="Tag1r">
+                    Registration procedure,<br>
+                    retrieve sub (UE) profile
+                </h5>
+
+                <h5 id="Tag2">
+                    AMF/MME trigger<br>
+                    registration and<br>
+                    authentication
+                </h5>
+
+                <div id="Tag3">
+                    Access<br>
+                    Network
+                </div>
+
+                <h5 id="Tag4">
+                    Subscriber network(PLMNID) changed enroute
+                </h5>
+
+                <h5 id="Tag5">
+                    Session registration,<br>
+                    request on to<br>
+                    ePDG/SMF
+                </h5>
+
+                <h5 id="Tag6">
+                    AAA procedure<br>
+                    in case needed
+                </h5>
+                <h5 id="Tag7">
+                    Gx session/N7<br>
+                    procedure
+                </h5>
+                <h5 id="Tag8">SMF sends requested<br> trigger to PCF</h5>
+                <h5 id="Tag9">Session data to PCF</h5>
+                <h5 id="Tag10">Response towards SMF</h5>
+                <h5 id="Tag11">Notify policy decision to be<br> enforced on SMF</h5>
+                <h5 id="Tag12">Notification sent from<br>UDR to PCF (post)</h5>
+                <h5 id="Tag13">Response (Nudr)</h5>
+                <h5 id="Tag14">PCF requests Nudr<br>for PLMNID policy data</h5>
+                <h5 id="Tag15">Subscriber<br>category<br>change<img style="position:fixed;left:-50px; top:-2px" src="{{url_for('static', filename='laptop.png')}}" /></h5>                <h5 id="Tag16">Retrieve sub policy/<br>apps policy (Get)</h5>
+                <h5 id="Tag17">Store session blob<br>data in UDR(LDAP)</h5>
+                <h5 id="Tag18">Optional PCF<br>policy<br>selection</h5>
+                <h5 id="Tag19">Retrieve session blob data from UDR(Get)<img style="position:fixed; left:0px ;top:70px" src="{{url_for('static', filename='dropmenu.png')}}" /></h5>
+
+
+                <!--registration-->
+                <h4 class="number" id="regnum1">1</h4>
+                <h4 class="number" id="regnum2">2</h4>
+                <h4 class="number" id="regnum21">2'</h4>
+
+                <!--pdu-->
+                <h4 class="number" id="pdunum1">1</h4>
+                <h4 class="number" id="pdunum2">2</h4>
+                <h4 class="number" id="pdunum3">3</h4>
+                <h4 class="number" id="pdunum4">4</h4>
+                <h4 class="number" id="pdunum5">5</h4>
+                <h4 class="number" id="pdunum6">6</h4>
+                <h4 class="number" id="pdunum7">7</h4>
+                <h4 class="number" id="pdunum8">8</h4>
+
+                <!--pcf-->
+                <h4 class="number" id="pcfnum1">1</h4>
+                <h4 class="number" id="pcfnum2">2</h4>
+                <h4 class="number" id="pcfnum3">3</h4>
+
+                <!--notification-->
+                <h4 class="number" id="notnum1">1</h4>
+                <h4 class="number" id="notnum2">2</h4>
+                <h4 class="number" id="notnum3">3</h4>
+                <h4 class="number" id="notnum4">4</h4>
+                <h4 class="number" id="notnum5">5</h4>
+
+            </div>
+
+
+            <div class="button">
+                <!--<div style="padding:1em; align-self:center;  text-align:center;border-color:#C0C0C0; background-color:#C0C0C0; border-style:solid; border-radius: 8px; box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0;font-size:20px;">UE Registration</div>
+                <div style="padding:1em; align-self:center; text-align:center; border-style:solid;">Session Establishment</div>
+                <div style="padding:1em; align-self:center; text-align:center; border-style:solid;">PCF Session Blob</div>
+                <div style="padding:1em; align-self:center; text-align:center; border-style:solid;">Notification</div>
+                <div style="padding:1em; align-self:center; text-align:center; border-style:solid;">UE Location Change</div>
+                -->
+                <table class="button_table">
+                    <tr>
+                        <td>
+                            <form action="/ueregister" method="post">
+                                <button id="uereg" type="submit">UE Registration</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form action="/establishpdu" method="post">
+                                <button id="pdusession" type="submit">Session Establishment</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form action="/pcf_session" method="post">
+                                <button id="sessionblob" type="submit">
+                                    PCF Session Blob
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form action="/notification" method="post">
+                                <button id="notification" type="submit">Notification</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button style="padding: 1em;align-self:center; text-align: center; border-color: #C0C0C0; border-style: solid; border-radius: 8px;
+            box-shadow: 0 8px 16px 0 #C0C0C0, 0 6px 20px 0 #C0C0C0; font-size: 16px;">
+                                UE Location Change
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+    </section>
+
+    <div id="icon-arrow-straight"></div>
+    <div id="icon-arrow-upwards"></div>
+    <div id="icon-arrow-45above"></div>
+    <div id="icon-arrow-45above1"></div>
+    <div id="icon-arrow-straight1"></div>
+    <div id="icon-arrow-straight-upwards2"></div>
+    <div id="icon-arrow-above-origin2"></div>
+    <div id="icon-arrow-above-origin-dd2"></div>
+    <div id="icon-arrow-downwards2"></div>
+    <div id="icon-arrow-downwards21"></div>
+    <div id="icon-arrow-rightwards2"></div>
+    <div id="icon-arrow-leftwards-last-1"></div>
+    <div id="icon-arrow-downwards-last-1"></div>
+    <div id="selfloop1">&#8631</div>
+    <div id="selfloop2">&#8631</div>
+
+
+    <footer>
+        <p>Nokia</p>
+    </footer>
+
+
+    <script>
+        var i = 0;
+        var j = 0;
+
+
+        var ue_done = "{{ue}}";
+        var pdu_done = "{{pdu}}";
+        var pcf_done = "{{pcf}}";
+        var notif_done = "{{noti}}";
+
+        var interval;
+
+        var ue_register_ID_array = ["Tag2", "Tag1r", "Tag18"];
+        var ue_register_ARROW_array = ["icon-arrow-upwards", "icon-arrow-45above", "icon-arrow-45above1"];
+        var ue_NUMBER_array = ["regnum1", "regnum2", "regnum21"];
+
+        var sessionpdu_ID_array = ["Tag5", "Tag6", "Tag7", "Tag16", "Tag13", "Tag10"];
+        var sessionpdu_ARROW_array = ["icon-arrow-straight1", "selfloop1", "icon-arrow-straight-upwards2", "icon-arrow-above-origin2", "icon-arrow-above-origin-dd2", "icon-arrow-downwards2", "icon-arrow-downwards21", "icon-arrow-rightwards2"];
+        var sessionpdu_NUMBER_array = ["pdunum1", "pdunum2", "pdunum3", "pdunum4", "pdunum5", "pdunum6", "pdunum7", "pdunum8"];
+
+        var pcfsession_ID_array = ["Tag9", "Tag17", "Tag19"];
+        var pcfsession_ARROW_array = ["icon-arrow-straight-upwards2", "icon-arrow-above-origin2", "icon-arrow-leftwards-last-1", "icon-arrow-downwards-last-1"]; //last 2 elements
+        var pcfsession_NUMBER_array = ["pcfnum1", "pcfnum2", "pcfnum3"];
+
+        var notification_ID_array = ["Tag15", "Tag12", "Tag11"];
+        var notification_ARROW_array = ["selfloop2", "icon-arrow-above-origin-dd2", "icon-arrow-downwards2", "icon-arrow-downwards21", "icon-arrow-rightwards2"];
+        var notification_NUMBER_array = ["notnum1", "notnum2", "notnum3", "notnum4", "notnum5"];
+
+        function check() {
+            if (ue_done == 1) {
+                document.getElementById("uereg").style = "background-color:green";
+            }
+            if (pdu_done == 1) {
+                document.getElementById("pdusession").style = "background-color:green";
+            }
+            if (notif_done == 1) {
+                document.getElementById("notification").style = "background-color:green";
+            }
+            if (pcf_done == 1) {
+                document.getElementById("sessionblob").style = "background-color:green";
+            }
+        }
+
+        function stop() {
+            clearInterval(interval);
+        }
+
+        function show(type) {
+
+            document.getElementById(type).style.backgroundColor = "green";
+        }
+
+        function ue_anim() {
+            if (i == ue_register_ID_array.length - 1) {
+                stop();
+            }
+
+            document.getElementById(ue_register_ID_array[i]).style = "animation: fade_in 2s";
+            document.getElementById(ue_register_ARROW_array[j]).style = "animation: fade_in 2s";
+            document.getElementById(ue_NUMBER_array[j]).style = "animation: fade_in 2s";
+
+            document.getElementById(ue_register_ID_array[i]).style.visibility = "visible";
+            document.getElementById(ue_register_ARROW_array[j]).style.visibility = "visible";
+            document.getElementById(ue_NUMBER_array[j]).style.visibility = "visible";
+            i++;
+            j++;
+        }
+
+        function ue(type) {
+            
+            
+            document.getElementById("Tag3").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight").style.visibility = "visible";
+            i = 0;
+            j = 0;
+
+            if (pdu_done == 1) {
+                document.getElementById("pdusession").style = "background-color:green";
+            }
+            if (notif_done == 1) {
+                document.getElementById("notification").style = "background-color:green";
+            }
+            if (pcf_done == 1) {
+                document.getElementById("sessionblob").style = "background-color:green";
+            }
+
+            interval = setInterval(ue_anim, 1000);
+            //setTimeout(show, 5000, type);
+            document.getElementById(type).style.animation = "green_fade_in 8s";
+            document.getElementById(type).style.backgroundColor = "green";
+
+        }
+
+        function session(type) {
+
+
+            if (ue_done == 1) {
+                document.getElementById("uereg").style = "background-color:green";
+            }
+            if (notif_done == 1) {
+                document.getElementById("notification").style = "background-color:green";
+            }
+            if (pcf_done == 1) {
+                document.getElementById("sessionblob").style = "background-color:green";
+            }
+
+            document.getElementById("Tag3").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight1").style.visibility = "visible";
+            i = 0;
+            j = 0;
+            interval = setInterval(sessionpdu_anim, 1000);
+            //setTimeout(show, 9000, type);
+            document.getElementById(type).style.animation = "green_fade_in 22s";
+            document.getElementById(type).style.backgroundColor = "green";
+        }
+
+        function sessionpdu_anim() {
+            if (j == sessionpdu_ARROW_array.length - 1) {
+                stop();
+            }
+            if (i < sessionpdu_ID_array.length) {
+                document.getElementById(sessionpdu_ID_array[i]).style.animation = "fade_in 2s";
+                document.getElementById(sessionpdu_ARROW_array[j]).style.visibility = "fade_in 2s";
+                document.getElementById(sessionpdu_NUMBER_array[j]).style.visibility = "fade_in 2s";
+
+                document.getElementById(sessionpdu_ID_array[i]).style.visibility = "visible";
+                document.getElementById(sessionpdu_ARROW_array[j]).style.visibility = "visible";
+                document.getElementById(sessionpdu_NUMBER_array[j]).style.visibility = "visible";
+                i++;
+                j++;
+            }
+            else {
+                document.getElementById(sessionpdu_ARROW_array[j]).style.animation = "fade_in 2s";
+                document.getElementById(sessionpdu_NUMBER_array[j]).style.animation = "fade_in 2s";
+                document.getElementById(sessionpdu_ARROW_array[j]).style.visibility = "visible";
+                document.getElementById(sessionpdu_NUMBER_array[j]).style.visibility = "visible";
+                j++;
+            }
+        }
+
+        function notification(type) {
+
+            if (ue_done == 1) {
+                document.getElementById("uereg").style = "background-color:green";
+            }
+            if (pdu_done == 1) {
+                document.getElementById("pdusession").style = "background-color:green";
+            }
+            if (pcf_done == 1) {
+                document.getElementById("sessionblob").style = "background-color:green";
+            }
+
+            document.getElementById("Tag3").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight1").style.visibility = "visible";
+            i = 0;
+            j = 0;
+            interval = setInterval(notification_anim, 1000);
+            //setTimeout(show, 7000, type);
+            document.getElementById(type).style.animation = "green_fade_in 15s";
+            document.getElementById(type).style.backgroundColor = "green";
+        }
+
+        function notification_anim() {
+            if (j == notification_ARROW_array.length - 1) {
+                stop();
+            }
+            if (i < notification_ID_array.length) {
+                document.getElementById(notification_ID_array[i]).style.animation = "fade_in 2s";
+                document.getElementById(notification_ARROW_array[j]).style.visibility = "fade_in 2s";
+                document.getElementById(notification_NUMBER_array[j]).style.visibility = "fade_in 2s";
+
+                document.getElementById(notification_ID_array[i]).style.visibility = "visible";
+                document.getElementById(notification_ARROW_array[j]).style.visibility = "visible";
+                document.getElementById(notification_NUMBER_array[j]).style.visibility = "visible";
+                i++;
+                j++;
+            }
+            else {
+                document.getElementById(notification_ARROW_array[j]).style.animation = "fade_in 2s";
+                document.getElementById(notification_ARROW_array[j]).style.visibility = "visible";
+                document.getElementById(notification_NUMBER_array[j]).style.visibility = "fade_in 2s";
+                document.getElementById(notification_NUMBER_array[j]).style.visibility = "visible";
+                j++;
+            }
+        }
+
+        //code to be written for disappearing the arrows of pcf session
+
+        function blob(type) {
+
+            if (ue_done == 1) {
+                document.getElementById("uereg").style = "background-color:green";
+            }
+            if (pdu_done == 1) {
+                document.getElementById("pdusession").style = "background-color:green";
+            }
+            if (notif_done == 1) {
+                document.getElementById("notification").style = "background-color:green";
+            }
+
+
+            document.getElementById("Tag3").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight").style.visibility = "visible";
+            document.getElementById("icon-arrow-straight1").style.visibility = "visible";
+            i = 0;
+            j = 0;
+            interval = setInterval(pcfsession_anim, 1000);
+            //setTimeout(show, 5000, type);
+            document.getElementById(type).style.animation = "green_fade_in 8s";
+            document.getElementById(type).style.backgroundColor = "green";
+        }
+
+        function pcfsession_anim() {
+
+            //var pcfsession_ID_array = ["Tag9", "Tag17", "Tag19"];
+            //var pcfsession_ARROW_array = ["icon-arrow-straight-upwards2", "icon-arrow-above-origin2", "icon-arrow-leftwards-last-1", "icon-arrow-downwards-last-1"]; //last 2 elements
+
+
+            if (j == 2) {
+
+                document.getElementById(pcfsession_ID_array[i]).style = "animation: fade_in 2s";
+
+                document.getElementById(pcfsession_NUMBER_array[j]).style = "animation: fade_in 2s";
+                document.getElementById(pcfsession_ARROW_array[j]).style = "animation: fade_in 2s";
+                document.getElementById(pcfsession_ARROW_array[j + 1]).style = "animation: fade_in 2s";
+
+                document.getElementById(pcfsession_ID_array[i]).style.visibility = "visible";
+                document.getElementById(pcfsession_NUMBER_array[j]).style.visibility = "visible";
+                document.getElementById(pcfsession_ARROW_array[j]).style.visibility = "visible";
+                document.getElementById(pcfsession_ARROW_array[j + 1]).style.visibility = "visible";
+                stop();
+            }
+
+            document.getElementById(pcfsession_ID_array[i]).style = "animation: fade_in 2s";
+            document.getElementById(pcfsession_NUMBER_array[j]).style = "animation: fade_in 2s";
+            document.getElementById(pcfsession_ARROW_array[j]).style = "animation: fade_in 2s";
+
+            document.getElementById(pcfsession_ID_array[i]).style.visibility = "visible";
+            document.getElementById(pcfsession_NUMBER_array[j]).style.visibility = "visible";
+            document.getElementById(pcfsession_ARROW_array[j]).style.visibility = "visible";
+            i++;
+            j++;
+        }
+    </script>
+
+
+
+    {% if regsuccess == 1 %}
+    <script>
+        ue("uereg");
+
+    </script>
+    {% endif %}
+
+    {% if regsuccess == 2 %}
+    <script>
+        document.getElementById("uereg").style = "background-color:red";
+    </script>
+    {% endif %}
+
+    {% if pdusuccess == 1 %}
+    <script>
+        session("pdusession");
+    </script>
+    {% endif %}
+
+    {% if pdusuccess == 2 %}
+    <script>
+        document.getElementById("pdusession").style = "background-color:red";
+    </script>
+    {% endif %}
+
+    {% if pcfblobsuccess == 1 %}
+    <script>
+        blob("sessionblob");
+    </script>
+    {% endif %}
+
+    {% if pcfblobsuccess == 2 %}
+    <script>
+        document.getElementById("sessionblob").style = "background-color:red";
+    </script>
+    {% endif %}
+
+    {% if notificationsuccess == 1 %}
+    <script>
+        notification("notification");
+    </script>
+    {% endif %}
+
+    {% if notificationsuccess == 2 %}
+    <script>
+        document.getElementById("notification").style = "background-color:red";
+    </script>
+    {% endif %}
+
+
+
+
+</body>
+
+</html>
