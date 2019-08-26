@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import json
 import socket
 
+notificationStatus=0
+
 conf_str = '{"udr_sub_ip_address":"127.0.0.1","udr_sub_port_number":"8080","udr_policy_ip_address":"127.0.0.1","udr_policy_port_number":"8082"}'
 
 conf_json = json.loads(conf_str)

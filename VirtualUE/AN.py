@@ -19,6 +19,8 @@ import socket,struct
 import json
 import ldap
 import ldap.modlist as modlist
+import simconf
+
 
 ########LDAP Configuration###############
 ldap_server = 'ldap://localhost:16611'
@@ -123,7 +125,7 @@ app = Flask(__name__)
 def index():
 	global pdu_session_status
 	global registration_status
-	return render_template('5Gsimulator.html',regsuccess=registration_status,pdusuccess=pdu_session_status)
+	return render_template('5Gsimulator.html')
 
 @app.route('/ueregister',methods=['POST'])
 def RegisterReq():
@@ -217,16 +219,18 @@ def NotificationReq():
     global pdu
     global pcf
     global noti
-
+	
+    #data = connexion.request.data
+    #print("Data= ",data)
     ldapc = ldap.initialize(ldap_server)
     result = ldapc.simple_bind_s(user,pw)
     print("bind success")
     print(result)
 
     old = {}
-    old["subscCats"] = ["VIP"]
+    old["subscCats"] = ["Gold"]
     new = {}
-    new["subscCats"]=["Gold"]
+    new["subscCats"]=["VIP"]
 
     #attrs = {}
     #attrs['subscCats'] = ['VIP']
@@ -238,16 +242,18 @@ def NotificationReq():
     print("LDIF:")
     print(ldif)
     
-    ldapc.modify_s(dn,ldif)
+    #ldapc.modify_s(dn,ldif)
 	
     print("In notificationReq")
     print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
     #code
-    checking_var = 1
+    #checking_var = 1
+
+    print("simconf===",simconf.notificationStatus)
 
     #if Success
-    if checking_var == 1 :
+    if simconf.notificationStatus == 1 :
         #code
         notification_status = 1
         noti = 1

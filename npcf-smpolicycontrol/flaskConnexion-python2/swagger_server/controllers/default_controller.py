@@ -9,6 +9,7 @@ import ldap
 import base64
 from simconf import conf_json,get_ip
 from hyper import HTTP20Connection
+import simconf
 
 ########LDAP Configuration###############
 ldap_server = 'ldap://localhost:16611'
@@ -70,6 +71,12 @@ def sm_policies_notify_update_post(body):  # noqa: E501
     r = requests.post(NotificationUri,data=smContextjson,headers=headers)
     if (r.status_code != 200) and (r.status_code != 204):
         return "[PCF][ERROR] smContextUpdate Notification Failed"
+    AnUri = "http://127.0.0.1:5555/notification"
+    notificationStatus = {'success'}
+    print("simconf before=",simconf.notificationStatus)
+    simconf.notificationStatus=1
+    print("simconf after=",simconf.notificationStatus)
+    ret = requests.post(AnUri,data="true",headers=headers)
     return '[PCF][INFO] do some magic!'
 
 def sm_policies_post(body):  # noqa: E501
