@@ -1,0 +1,18 @@
+
+<style>
+@font-face{
+    font-family:nokia1;
+    
+    src:url("Font/NokiaPureHeadline_Regular.ttf");
+}
+
+@font-face{
+    font-family:nokia;
+    
+    src:url("Font/NokiaPureHeadline_Bold.ttf");
+}
+
+
+body{font-family:nokia1;}
+
+</style>
